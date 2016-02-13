@@ -8,19 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithJoystickOld extends Command {
 
-	private Joystick joypad;
-
-	private DriveSystem drive = DriveSystem.getInstance();
-
 	public DriveWithJoystickOld() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		OI oi = OI.getInstance();
-		joypad = OI.getJoypad();
 
 	}
 

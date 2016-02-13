@@ -53,8 +53,7 @@ public class Robot extends IterativeRobot {
 		drive = DriveSystem.getInstance();
 		camera = CameraVisionRedux.getInstance();
 		station = station.getInstance();
-		shooter = shooter.getInstance();
-		
+		// shooter = shooter.getInstance();
 
 		String key = "Battery Voltage";
 		String value = "" + station.getBatteryVoltage();
@@ -70,7 +69,6 @@ public class Robot extends IterativeRobot {
 	 * the robot is disabled.
 	 */
 	public void disabledInit() {
-
 	}
 
 	public void disabledPeriodic() {
@@ -119,10 +117,7 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		driveWithJoystick = new DriveWithJoystickOld();
-		shootFull = new ShootFullPowerOld();
-		shootHalf = new ShootHalfPowerOld();
-		collectorIn = new CollectorInOld();
-		collectorOut = new CollectorOutOld();
+		driveWithJoystick.start();
 	}
 
 	/**
@@ -130,8 +125,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		driveWithJoystick.start();
-		
 
 		String key = "Battery Voltage";
 		String value = "" + station.getBatteryVoltage();
@@ -144,6 +137,6 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during test mode
 	 */
 	public void testPeriodic() {
-		LiveWindow.run();
+		// LiveWindow.run();
 	}
 }

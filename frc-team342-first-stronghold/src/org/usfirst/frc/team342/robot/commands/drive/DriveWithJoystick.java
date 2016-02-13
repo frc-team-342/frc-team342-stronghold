@@ -1,41 +1,50 @@
 package org.usfirst.frc.team342.robot.commands.drive;
 
+import org.usfirst.frc.team342.robot.OI;
+import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithJoystick extends Command {
+	private DriveSystem drive;
+	private Joystick joypad;
 
 	public DriveWithJoystick() {
-		// TODO Auto-generated constructor stub
+		drive = DriveSystem.getInstance();
+		joypad = OI.getInstance().getJoypad();
 	}
 
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
-		
+		requires(drive);
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		
+		// TODO Determine if past dead zone
+
+		// TODO Determine if turning
+
+		// TODO Set Speed
+
+		// TODO Act on turn
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
+		// Is already run in teleop
 		return false;
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-		
+		drive.Stop();
 	}
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+		end();
 	}
 
 }

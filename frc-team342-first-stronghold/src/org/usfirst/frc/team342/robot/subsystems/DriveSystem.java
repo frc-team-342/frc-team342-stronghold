@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
 	private static final double Kp = 0.5; // https://wpilib.screenstepslive.com/s/3120/m/7912/l/85772-gyros-to-control-robot-driving-direction
-	public static final DriveSystem INSTANCE = new DriveSystem();
+	private static final DriveSystem INSTANCE = new DriveSystem();
 	private final AnalogInput ultrasonic;
 	private final CANTalon frontRightWheel;
 	private final CANTalon frontLeftWheel;
@@ -48,34 +48,30 @@ public class DriveSystem extends Subsystem {
 		return INSTANCE;
 	}
 
-	public void DriveWithJoypad(Joystick joypad) {
-		double x = joypad.getRawAxis(0);
-		double y = joypad.getRawAxis(1);
-		double z = joypad.getRawAxis(2);
-		double zrot = joypad.getRawAxis(3);
-		double combined = x + y + z + zrot;
-		double deadzone = 0.15;
-		double driveMultiplier = 0.80;
-		double fifth_wheel = 1.0;
+	public void DriveWithJoypad(double leftSpeed, double rightSpeed) {
+		// double fifth_wheel = 1.0;
+
+		// double total = Math.abs(leftSpeed) + Math.abs(rightSpeed);
+		// int diz = ultrasonic.getValue();
+		// FRCNetworkCommunicationsLibrary.HALSetErrorData("\n" + diz);
+		//
+		// if (total > deadzone || total < deadzone * -1) {
+		// if (y * zrot < deadzone) {
+		// fifthWheel.set(fifth_wheel);
+		// drive.tankDrive(y, zrot);
+		//
+		// } else {
+		// drive.tankDrive(y * driveMultiplier, zrot * driveMultiplier);
+		// fifthWheel.set(fifth_wheel * -1);
+		// }
+		// } else {
+		// drive.tankDrive(0.0, 0.0);
+		// }
+
+		// TODO Move this somewhere else
 		SmartDashboard.putData("Gyro", navx);
-		double total = Math.abs(y) + Math.abs(zrot);
-		int diz = ultrasonic.getValue();
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\n" + diz);
-		
 
-		if (total > deadzone || total < deadzone * -1) {
-			if (y * zrot < deadzone) {
-				fifthWheel.set(fifth_wheel);
-				drive.tankDrive(y, zrot);
-
-			} else {
-				drive.tankDrive(y * driveMultiplier, zrot * driveMultiplier);
-				fifthWheel.set(fifth_wheel * -1);
-			}
-		} else {
-			drive.tankDrive(0.0, 0.0);
-		}
-
+		drive.tankDrive(leftSpeed, rightSpeed);
 	}
 
 	/**
@@ -98,18 +94,14 @@ public class DriveSystem extends Subsystem {
 		return navx.getAngle();
 	}
 
-	public String[] anglesnstuff() {
-		String[] text = new String[5];
-		text[0] = "" + navx.getAngle();
-		text[1] = "Alt" + navx.getAltitude();
-		text[2] = "Gyr x" + navx.getRawGyroX();
-		text[3] = "Gyr y" + navx.getRawGyroY();
-		text[4] = "Gyr z" + navx.getRawGyroZ();
-		return text;
-	}
-
 	public void Stop() {
 		drive.stopMotor();
+		// In case disable control does not do what stop motor should do.
+		fifthWheel.set(0);
+		// The disable control is undocumented, but the stopMotor() method is
+		// deprecated and says to use this method instead.
+		fifthWheel.disableControl();
+		fifthWheel.enableControl();
 	}
 
 	@Override
