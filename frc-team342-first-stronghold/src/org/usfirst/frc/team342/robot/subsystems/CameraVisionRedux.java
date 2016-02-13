@@ -1,6 +1,6 @@
 package org.usfirst.frc.team342.robot.subsystems;
 
-import org.usfirst.frc.team342.robot.commands.camera.SeeWithCamera;
+import org.usfirst.frc.team342.robot.commands.camera.SeeWithCameraOld;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -54,7 +54,7 @@ public class CameraVisionRedux extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new SeeWithCamera());
+		setDefaultCommand(new SeeWithCameraOld());
 	}
 
 	public static CameraVisionRedux getInstance() {

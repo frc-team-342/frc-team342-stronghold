@@ -2,9 +2,9 @@ package org.usfirst.frc.team342.robot.commands.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithJoystick extends Command {
+public class TurnLeft  extends Command{
 
-	public DriveWithJoystick() {
+	public TurnLeft() {
 		// TODO Auto-generated constructor stub
 	}
 

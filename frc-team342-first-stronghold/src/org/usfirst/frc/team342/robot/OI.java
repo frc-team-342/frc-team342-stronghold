@@ -1,10 +1,12 @@
 package org.usfirst.frc.team342.robot;
 
-import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
+import org.usfirst.frc.team342.robot.commands.camera.ChangeCameraOld;
 import org.usfirst.frc.team342.robot.commands.drive.TextOuput;
-import org.usfirst.frc.team342.robot.commands.shootersystem.Collector;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorIn;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorOut;
+//import org.usfirst.frc.team342.robot.commands.shootersystem.Collector;
+import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorInOld;
+import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorOutOld;
+import org.usfirst.frc.team342.robot.commands.shootersystem.ShootFullPowerOld;
+import org.usfirst.frc.team342.robot.commands.shootersystem.ShootHalfPowerOld;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -38,21 +40,33 @@ public class OI {
 		//Declare Joysticks
 		joypad = new Joystick(DRIVE_JOYPAD);
 		
+		//OuputText
 		JoystickButton TEXT_OUTPUT = new JoystickButton(joypad, JOYPAD_BUTTON_1);
 		
 		TEXT_OUTPUT.whileHeld(new TextOuput());
 		
+		//Change Camera
 		JoystickButton Change_Camera = new JoystickButton(joypad, JOYPAD_BUTTON_2);
 		
-		Change_Camera.whenPressed(new ChangeCamera());
+		Change_Camera.whenPressed(new ChangeCameraOld());
 		
+		//Collector Commands
 		JoystickButton CollectorIn = new JoystickButton(joypad, JOYPAD_BUTTON_6);
 		
-		CollectorIn.whileHeld(new CollectorIn());
+		CollectorIn.whenPressed(new CollectorInOld());
 		
 		JoystickButton CollectorOut = new JoystickButton(joypad, JOYPAD_BUTTON_5);
 		
-		CollectorOut.whileHeld(new CollectorOut());
+		CollectorOut.whenPressed(new CollectorOutOld());
+		
+		//Shooter Commands
+		JoystickButton ShooterFull = new JoystickButton(joypad, JOYPAD_BUTTON_8);
+		
+		ShooterFull.whileHeld(new ShootFullPowerOld());
+		
+		JoystickButton ShooterHalf = new JoystickButton(joypad, JOYPAD_BUTTON_7);
+		
+		ShooterHalf.whileHeld(new ShootHalfPowerOld());
 	}
 	
 	public static OI getInstance(){

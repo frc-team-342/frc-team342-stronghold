@@ -1,23 +1,34 @@
-package org.usfirst.frc.team342.robot.commands.drive;
+package org.usfirst.frc.team342.robot.commands.shootersystem;
 
+import org.usfirst.frc.team342.robot.OI;
+import org.usfirst.frc.team342.robot.subsystems.ShooterSystem;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithJoystick extends Command {
+public class ShootHalfPowerOld extends Command{
+	
+	private Joystick joypad;
+	
+	private ShooterSystem shooter = ShooterSystem.getInstance();
 
-	public DriveWithJoystick() {
+
+	public ShootHalfPowerOld() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
-		
+		OI oi = OI.getInstance();
+		joypad = oi.getJoypad();
 	}
 
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		
+		double speed = 0.5;
+		shooter.shooter(speed);
 	}
 
 	@Override

@@ -1,13 +1,15 @@
 
 package org.usfirst.frc.team342.robot;
 
-import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
-import org.usfirst.frc.team342.robot.commands.shootersystem.Collector;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorIn;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorOut;
-import org.usfirst.frc.team342.robot.commands.shootersystem.Shoot;
+import org.usfirst.frc.team342.robot.AtnomousCommands.DriveStraightOld;
+import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystickOld;
+//import org.usfirst.frc.team342.robot.commands.shootersystem.Collector;
+import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorInOld;
+import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorOutOld;
+//import org.usfirst.frc.team342.robot.commands.shootersystem.Shoot;
+import org.usfirst.frc.team342.robot.commands.shootersystem.ShootFullPowerOld;
+import org.usfirst.frc.team342.robot.commands.shootersystem.ShootHalfPowerOld;
 import org.usfirst.frc.team342.robot.subsystems.CameraVisionRedux;
-import org.usfirst.frc.team342.robot.subsystems.DriveStriaght;
 import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
 import org.usfirst.frc.team342.robot.subsystems.ShooterSystem;
 
@@ -33,12 +35,13 @@ public class Robot extends IterativeRobot {
 	private OI oi;
 	private DriveSystem drive;
 	private DriverStation station;
-	private DriveWithJoystick driveWithJoystick;
+	private DriveWithJoystickOld driveWithJoystick;
 	private CameraVisionRedux camera;
 	private ShooterSystem shooter;
-	private Shoot shoot;
-	private CollectorIn collectorIn;
-	private CollectorOut collectorOut;
+	private ShootFullPowerOld shootFull;
+	private ShootHalfPowerOld shootHalf;
+	private CollectorInOld collectorIn;
+	private CollectorOutOld collectorOut;
 	private Command autonomousCommand;
 
 	/**
@@ -95,7 +98,7 @@ public class Robot extends IterativeRobot {
 		 */
 		//
 		// schedule the autonomous command (example)
-		autonomousCommand = new DriveStriaght();
+		autonomousCommand = new DriveStraightOld();
 
 		autonomousCommand.start();
 
@@ -115,10 +118,11 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		driveWithJoystick = new DriveWithJoystick();
-		shoot = new Shoot();
-		collectorIn = new CollectorIn();
-		collectorOut = new CollectorOut();
+		driveWithJoystick = new DriveWithJoystickOld();
+		shootFull = new ShootFullPowerOld();
+		shootHalf = new ShootHalfPowerOld();
+		collectorIn = new CollectorInOld();
+		collectorOut = new CollectorOutOld();
 	}
 
 	/**
@@ -127,9 +131,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		driveWithJoystick.start();
-		shoot.start();
-		collectorIn.start();
-		collectorOut.start();
+		
 
 		String key = "Battery Voltage";
 		String value = "" + station.getBatteryVoltage();

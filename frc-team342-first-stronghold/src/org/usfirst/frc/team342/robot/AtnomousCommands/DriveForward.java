@@ -1,23 +1,38 @@
-package org.usfirst.frc.team342.robot.commands.drive;
+package org.usfirst.frc.team342.robot.AtnomousCommands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithJoystick extends Command {
+public class DriveForward extends Command {
 
-	public DriveWithJoystick() {
+	public DriveForward() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DriveForward(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
+
+	public DriveForward(double timeout) {
+		super(timeout);
+		// TODO Auto-generated constructor stub
+	}
+
+	public DriveForward(String name, double timeout) {
+		super(name, timeout);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void initialize() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void execute() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -29,13 +44,13 @@ public class DriveWithJoystick extends Command {
 	@Override
 	protected void end() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected void interrupted() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -4,17 +4,20 @@ package org.usfirst.frc.team342.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 import org.usfirst.frc.team342.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
-	private static final double Kp = 0.03; // https://wpilib.screenstepslive.com/s/3120/m/7912/l/85772-gyros-to-control-robot-driving-direction
+	private static final double Kp = 0.5; // https://wpilib.screenstepslive.com/s/3120/m/7912/l/85772-gyros-to-control-robot-driving-direction
 	public static final DriveSystem INSTANCE = new DriveSystem();
+	private final AnalogInput ultrasonic;
 	private final CANTalon frontRightWheel;
 	private final CANTalon frontLeftWheel;
 	private final CANTalon backRightWheel;
@@ -33,6 +36,7 @@ public class DriveSystem extends Subsystem {
 		backRightWheel = new CANTalon(RobotMap.TALON_BACK_RIGHT_WHEEL_CAN);
 		backLeftWheel = new CANTalon(RobotMap.TALON_BACK_LEFT_WHEEL_CAN);
 		fifthWheel = new CANTalon(RobotMap.TALON_TURNING_WHEEL_CAN);
+		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
 
 		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
@@ -54,12 +58,12 @@ public class DriveSystem extends Subsystem {
 		double driveMultiplier = 0.80;
 		double fifth_wheel = 1.0;
 		SmartDashboard.putData("Gyro", navx);
-		// FRCNetworkCommunicationsLibrary.HALSetErrorData("x = " + x);
-		// FRCNetworkCommunicationsLibrary.HALSetErrorData("y = " + y);
-		// FRCNetworkCommunicationsLibrary.HALSetErrorData("z = " + z);
-		// FRCNetworkCommunicationsLibrary.HALSetErrorData("zrot = " + zrot);
+		double total = Math.abs(y) + Math.abs(zrot);
+		int diz = ultrasonic.getValue();
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("\n" + diz);
+		
 
-		if (combined > deadzone || combined < deadzone) {
+		if (total > deadzone || total < deadzone * -1) {
 			if (y * zrot < deadzone) {
 				fifthWheel.set(fifth_wheel);
 				drive.tankDrive(y, zrot);
@@ -102,7 +106,6 @@ public class DriveSystem extends Subsystem {
 		text[3] = "Gyr y" + navx.getRawGyroY();
 		text[4] = "Gyr z" + navx.getRawGyroZ();
 		return text;
-
 	}
 
 	public void Stop() {

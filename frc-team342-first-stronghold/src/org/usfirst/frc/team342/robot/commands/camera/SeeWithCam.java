@@ -1,10 +1,10 @@
-package org.usfirst.frc.team342.robot.commands.drive;
+package org.usfirst.frc.team342.robot.commands.camera;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithJoystick extends Command {
+public class SeeWithCam extends Command{
 
-	public DriveWithJoystick() {
+	public SeeWithCam() {
 		// TODO Auto-generated constructor stub
 	}
 

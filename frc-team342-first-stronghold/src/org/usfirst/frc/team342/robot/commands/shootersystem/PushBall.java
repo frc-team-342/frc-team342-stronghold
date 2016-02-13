@@ -1,10 +1,10 @@
-package org.usfirst.frc.team342.robot.commands.drive;
+package org.usfirst.frc.team342.robot.commands.shootersystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DriveWithJoystick extends Command {
+public class PushBall extends Command {
 
-	public DriveWithJoystick() {
+	public PushBall() {
 		// TODO Auto-generated constructor stub
 	}
 
