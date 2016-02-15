@@ -8,6 +8,7 @@ public class SeeWithCamera extends Command {
 
 	private CameraVisionRedux camera;
 
+	/** Continuously retrieve images from the camera. */
 	public SeeWithCamera() {
 		camera = CameraVisionRedux.getInstance();
 		requires(camera);
@@ -15,12 +16,11 @@ public class SeeWithCamera extends Command {
 
 	@Override
 	protected void initialize() {
-
 	}
 
 	@Override
 	protected void execute() {
-		camera.SeeingIsBelieving();
+		camera.grapImage();
 	}
 
 	@Override
@@ -30,12 +30,10 @@ public class SeeWithCamera extends Command {
 
 	@Override
 	protected void end() {
-		// camera.StopSeeingIsBelieving();
 	}
 
 	@Override
 	protected void interrupted() {
-
 	}
 
 }

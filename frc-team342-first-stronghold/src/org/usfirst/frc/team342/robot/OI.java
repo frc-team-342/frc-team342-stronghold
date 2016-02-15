@@ -1,28 +1,43 @@
 package org.usfirst.frc.team342.robot;
 
-import org.usfirst.frc.team342.robot.commands.camera.ChangeCameraOld;
-import org.usfirst.frc.team342.robot.commands.drive.TextOuput;
-//import org.usfirst.frc.team342.robot.commands.shootersystem.Collector;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorInOld;
-import org.usfirst.frc.team342.robot.commands.shootersystem.CollectorOutOld;
-import org.usfirst.frc.team342.robot.commands.shootersystem.ShootFullPowerOld;
-import org.usfirst.frc.team342.robot.commands.shootersystem.ShootHalfPowerOld;
+import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
+import org.usfirst.frc.team342.robot.commands.drive.DriveStop;
+import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
+import org.usfirst.frc.team342.robot.commands.drive.LowerTurnWheel;
+import org.usfirst.frc.team342.robot.commands.drive.RaiseTurnWheel;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmOut;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectBall;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorIn;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorOut;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.PushBall;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.StopCollector;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootHighPower;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootLowPower;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.StopShooter;
+import org.usfirst.frc.team342.robot.util.JoystickMonitor;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
+/** This class is the glue that binds the controls on the physical operator
+ * interface to the commands and command groups that allow control of the
+ * robot. */
 public class OI {
-	private static final OI INSTANCE = new OI();
+	/** This is a somewhat awkward class. It is a wrapper for passing
+	 * commands to the scheduler using Triggers, so it's code should only be
+	 * one once or else the scheduler would have two copies of the
+	 * buttons. */
+	private static final OI instance = new OI();
 
-	// Map Joypad
-	private final int DRIVE_JOYPAD = 0;
+	/** Create joystick from port 0. */
+	// TODO Document our controller here
+	private static final Joystick joypad = new Joystick(0);
 
 	// Map Joypad Buttons
+	// TODO Finish Mapping Buttons
 	private static final int X_BUTTON = 1;
 	private static final int A_BUTTON = 2;
 	private static final int B_BUTTON = 3;
@@ -33,45 +48,82 @@ public class OI {
 	private static final int LEFT_TRIGGER = 7;
 	private static final int RIGHT_TRIGGER = 8;
 
-	// Declare Joypad
-	private Joystick joypad;
+	private static final int NO_BUTTON = -1;
 
 	private OI() {
-		// Declare Joysticks
-		joypad = new Joystick(DRIVE_JOYPAD);
+		// Start the drive joystick
+		enableJoystickDetection();
 
-		// OuputText
-		JoystickButton TEXT_OUTPUT = new JoystickButton(joypad, X_BUTTON);
+		// TODO Decide which buttons to map to what commands
 
-		// Change Camera
-		JoystickButton Change_Camera = new JoystickButton(joypad, A_BUTTON);
+		// Camera
+		mapCommand(X_BUTTON, new ChangeCamera());
 
-		Change_Camera.whenPressed(new ChangeCameraOld());
+		// Drive
+		mapCommand(A_BUTTON, new LowerTurnWheel(), new DriveStop());
+		mapCommand(B_BUTTON, new RaiseTurnWheel(), new DriveStop());
 
-		// Collector Commands
-		JoystickButton CollectorIn = new JoystickButton(joypad, RIGHT_TRIGGER);
+		// Arm
+		mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
+		mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
 
-		CollectorIn.whenPressed(new CollectorInOld());
+		// Collector
+		mapCommand(LEFT_BUMPER, new CollectorIn(), new StopCollector());
+		mapCommand(RIGHT_TRIGGER, new CollectorOut(), new StopCollector());
+		mapCommand(LEFT_TRIGGER, new CollectBall());
+		mapCommand(NO_BUTTON, new PushBall());
 
-		JoystickButton CollectorOut = new JoystickButton(joypad, RIGHT_BUMPER);
-
-		CollectorOut.whenPressed(new CollectorOutOld());
-
-		// Shooter Commands
-		JoystickButton ShooterFull = new JoystickButton(joypad, LEFT_TRIGGER);
-
-		ShooterFull.whileHeld(new ShootFullPowerOld());
-
-		JoystickButton ShooterHalf = new JoystickButton(joypad, LEFT_BUMPER);
-
-		ShooterHalf.whileHeld(new ShootHalfPowerOld());
+		// Shooter
+		mapCommand(NO_BUTTON, new ShootHighPower(), new StopShooter());
+		mapCommand(NO_BUTTON, new ShootLowPower(), new StopShooter());
 	}
 
-	public static OI getInstance() {
-		return INSTANCE;
+	/** Makes sure the instance has been created. */
+	public static void initInstance() {
+		// Does nothing other than initializing instance if it isn't
+		// already initialized. */
+		instance.notifyAll();
 	}
 
-	public Joystick getJoypad() {
-		return joypad;
+	/** Enables teleop driving with joystick using a home-made Trigger for
+	 * joystick detection. */
+	private void enableJoystickDetection() {
+		// Create monitor to send commands when the joystick is used.
+		JoystickMonitor mon = new JoystickMonitor(joypad, false);
+
+		// Drive with joystick values when the joystick is in use.
+		DriveWithJoystick driveStartCommand = new DriveWithJoystick(
+				mon.getLastEvent());
+		mon.whileActive(driveStartCommand);
+
+		// Stop when the joystick is in the deadzone.
+		DriveStop driveStopCommand = new DriveStop();
+		mon.whenInactive(driveStopCommand);
+	}
+
+	/** Simplifies mapping commands to buttons.
+	 * 
+	 * @param buttonNumber
+	 *            The number of the button on the gamepad
+	 * @param command
+	 *            The command to be run when the button is pressed. */
+	private void mapCommand(int buttonNumber, Command command) {
+		JoystickButton button = new JoystickButton(joypad, buttonNumber);
+		button.whenPressed(command);
+	}
+
+	/** Simplifies of the mapping to buttons.
+	 * 
+	 * @param buttonNumber
+	 *            The number of the button on the gamepad.
+	 * @param whenPressed
+	 *            The command to be run when the button is pressed.
+	 * @param WhenReleased
+	 *            The command to be run when the button is released. */
+	private void mapCommand(int buttonNumber, Command whenPressed,
+			Command WhenReleased) {
+		JoystickButton button = new JoystickButton(joypad, buttonNumber);
+		button.whenPressed(whenPressed);
+		button.whenReleased(WhenReleased);
 	}
 }

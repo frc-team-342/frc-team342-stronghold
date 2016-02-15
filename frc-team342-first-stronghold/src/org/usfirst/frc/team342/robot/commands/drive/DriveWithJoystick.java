@@ -1,50 +1,47 @@
 package org.usfirst.frc.team342.robot.commands.drive;
 
-import org.usfirst.frc.team342.robot.OI;
 import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
+import org.usfirst.frc.team342.robot.util.JoystickMonitor.JoystickEvent;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithJoystick extends Command {
 	private DriveSystem drive;
-	private Joystick joypad;
+	/** Used to access joystick position. */
+	private JoystickEvent event;
 
-	public DriveWithJoystick() {
+	/** Drive updates speed based on the joystick values
+	 * 
+	 * @param e
+	 *            The joystick event from the joystick monitor class. Used
+	 *            to update the value of the joystick. */
+	public DriveWithJoystick(JoystickEvent e) {
 		drive = DriveSystem.getInstance();
-		joypad = OI.getInstance().getJoypad();
-	}
+		event = e;
 
-	@Override
-	protected void initialize() {
 		requires(drive);
 	}
 
-	@Override
+	protected void initialize() {
+		event.updateValue();
+
+		double left = event.left();
+		double right = event.right();
+
+		drive.tankDrive(left, right);
+	}
+
 	protected void execute() {
-		// TODO Determine if past dead zone
-
-		// TODO Determine if turning
-
-		// TODO Set Speed
-
-		// TODO Act on turn
 	}
 
-	@Override
 	protected boolean isFinished() {
-		// Is already run in teleop
-		return false;
+		return true;
 	}
 
-	@Override
 	protected void end() {
-		drive.Stop();
 	}
 
-	@Override
 	protected void interrupted() {
-		end();
+		drive.stop();
 	}
-
 }

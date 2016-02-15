@@ -8,20 +8,19 @@ public class ChangeCamera extends Command {
 
 	private CameraVisionRedux cam;
 
+	/** Alternate between the cameras being streamed. */
 	public ChangeCamera() {
 		cam = CameraVisionRedux.getInstance();
 		requires(cam);
-
 	}
 
 	@Override
 	protected void initialize() {
-
+		cam.ChangeCamera();
 	}
 
 	@Override
 	protected void execute() {
-		cam.ChangeCamera();
 	}
 
 	@Override
@@ -31,12 +30,9 @@ public class ChangeCamera extends Command {
 
 	@Override
 	protected void end() {
-		//camera.StopSeeingIsBelieving();
 	}
 
 	@Override
 	protected void interrupted() {
-
 	}
-
 }

@@ -1,112 +1,96 @@
 
 package org.usfirst.frc.team342.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import org.usfirst.frc.team342.robot.RobotMap;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
-	private static final double Kp = 0.5; // https://wpilib.screenstepslive.com/s/3120/m/7912/l/85772-gyros-to-control-robot-driving-direction
-	private static final DriveSystem INSTANCE = new DriveSystem();
-	private final AnalogInput ultrasonic;
+
+	private static final DriveSystem instance = new DriveSystem();
+
+	/** Drive wheels. */
 	private final CANTalon frontRightWheel;
 	private final CANTalon frontLeftWheel;
 	private final CANTalon backRightWheel;
 	private final CANTalon backLeftWheel;
-	private final CANTalon fifthWheel;
-	/** Creates Robot Drive From Motors */
+
+	/** Drive system to control the wheels. */
 	private final RobotDrive drive;
 
-	// gyro stuff
+	/** We use a fifth wheel that is lowered to make turning work. */
+	private final CANTalon fifthWheel;
+
+	/** Navx device from kauilabs. */
 	private final AHRS navx;
 
-	private DriveSystem() {
-		super();
-		frontRightWheel = new CANTalon(RobotMap.TALON_FRONT_RIGHT_WHEEL_CAN);
-		frontLeftWheel = new CANTalon(RobotMap.TALON_FRONT_LEFT_WHEEL_CAN);
-		backRightWheel = new CANTalon(RobotMap.TALON_BACK_RIGHT_WHEEL_CAN);
-		backLeftWheel = new CANTalon(RobotMap.TALON_BACK_LEFT_WHEEL_CAN);
-		fifthWheel = new CANTalon(RobotMap.TALON_TURNING_WHEEL_CAN);
-		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
+	private final AnalogInput ultrasonic;
 
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+	/** Controls and senses driving of the robot. */
+	private DriveSystem() {
+		frontRightWheel = new CANTalon(RobotMap.FRONT_RIGHT_WHEEL_CAN_TALON);
+		frontLeftWheel = new CANTalon(RobotMap.FRONT_LEFT_WHEEL_CAN_TALON);
+		backRightWheel = new CANTalon(RobotMap.BACK_RIGHT_WHEEL_CAN_TALON);
+		backLeftWheel = new CANTalon(RobotMap.BACK_LEFT_WHEEL_CAN_TALON);
+
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
+				backRightWheel);
 		drive.setSafetyEnabled(false);
+
+		fifthWheel = new CANTalon(RobotMap.TURNING_WHEEL_CAN_TALON);
+
 		navx = new AHRS(SerialPort.Port.kMXP);
 
+		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
 	}
 
 	public static DriveSystem getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
-	public void DriveWithJoypad(double leftSpeed, double rightSpeed) {
-		// double fifth_wheel = 1.0;
-
-		// double total = Math.abs(leftSpeed) + Math.abs(rightSpeed);
-		// int diz = ultrasonic.getValue();
-		// FRCNetworkCommunicationsLibrary.HALSetErrorData("\n" + diz);
-		//
-		// if (total > deadzone || total < deadzone * -1) {
-		// if (y * zrot < deadzone) {
-		// fifthWheel.set(fifth_wheel);
-		// drive.tankDrive(y, zrot);
-		//
-		// } else {
-		// drive.tankDrive(y * driveMultiplier, zrot * driveMultiplier);
-		// fifthWheel.set(fifth_wheel * -1);
-		// }
-		// } else {
-		// drive.tankDrive(0.0, 0.0);
-		// }
-
+	public void tankDrive(double leftSpeed, double rightSpeed) {
 		// TODO Move this somewhere else
 		SmartDashboard.putData("Gyro", navx);
 
 		drive.tankDrive(leftSpeed, rightSpeed);
 	}
-
-	/**
-	 * Drive with correction. As long as the robot continues to go straight, the
-	 * heading will be zero. This example uses the gyro to keep the robot on
-	 * course by modifying the turn parameter of the Drive method from website
-	 * see Kp above.
-	 */
-	public void driv3straight(double speed, double angle) {
-
-		drive.drive(speed, -angle * Kp);
-
+	
+	public void drive(double speed, double angle) {
+		drive.drive(speed, angle);
 	}
+
+	public void setFifthWheel(double speed) {
+		fifthWheel.set(speed);
+	}
+
 
 	public void resetGyro() {
 		navx.reset();
 	}
 
-	public double GetGyro() {
+	public double getGyro() {
 		return navx.getAngle();
 	}
 
-	public void Stop() {
+	public double getUltrasonic() {
+		return ultrasonic.getVoltage();
+	}
+
+	/** Set all motor values to zero. */
+	public void stop() {
 		drive.stopMotor();
-		// In case disable control does not do what stop motor should do.
 		fifthWheel.set(0);
-		// The disable control is undocumented, but the stopMotor() method is
-		// deprecated and says to use this method instead.
-		fifthWheel.disableControl();
-		fifthWheel.enableControl();
 	}
 
 	@Override
 	protected void initDefaultCommand() {
-
 	}
 
 }
