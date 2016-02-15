@@ -38,8 +38,8 @@ d __ ___.-''-. _____b
 public class CameraVisionRedux extends Subsystem {
 	// There is a problem with camera names changing. If a change is
 	// suspected, find the correct name using the roborio web interface.
-	private static final String CAMERA_1 = "cam0";
-	private static final String CAMERA_2 = "cam1";
+	private static final String CAMERA_1 = "cam1";
+	private static final String CAMERA_2 = "cam2";
 
 	/* The quality of the compressed image sent to the smartDashboard. Used
 	 * by the camera servers setQuality() method. */

@@ -80,6 +80,6 @@ public class JoystickMonitor extends Trigger {
 	 * 
 	 * @return Double value between -1.0 and 1.0 */
 	private double getRightStick() {
-		return joystick.getTwist();
+		return joystick.getThrottle();
 	}
 }
