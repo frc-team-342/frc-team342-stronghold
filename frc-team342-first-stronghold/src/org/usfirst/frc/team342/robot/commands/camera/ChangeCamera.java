@@ -16,11 +16,11 @@ public class ChangeCamera extends Command {
 
 	@Override
 	protected void initialize() {
-		cam.ChangeCamera();
 	}
 
 	@Override
 	protected void execute() {
+		cam.ChangeCamera();
 	}
 
 	@Override

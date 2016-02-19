@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team342.robot.subsystems;
 
 import org.usfirst.frc.team342.robot.RobotMap;
@@ -32,6 +31,7 @@ public class DriveSystem extends Subsystem {
 	private final AHRS navx;
 
 	private final AnalogInput ultrasonic;
+	private boolean drivereversed;
 
 	/** Controls and senses driving of the robot. */
 	private DriveSystem() {
@@ -40,8 +40,10 @@ public class DriveSystem extends Subsystem {
 		backRightWheel = new CANTalon(RobotMap.BACK_RIGHT_WHEEL_CAN_TALON);
 		backLeftWheel = new CANTalon(RobotMap.BACK_LEFT_WHEEL_CAN_TALON);
 
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
-				backRightWheel);
+		frontRightWheel.setInverted(true);
+		backLeftWheel.setInverted(true);
+
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
 
 		fifthWheel = new CANTalon(RobotMap.TURNING_WHEEL_CAN_TALON);
@@ -49,6 +51,7 @@ public class DriveSystem extends Subsystem {
 		navx = new AHRS(SerialPort.Port.kMXP);
 
 		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
+		drivereversed = false;
 	}
 
 	public static DriveSystem getInstance() {
@@ -59,9 +62,26 @@ public class DriveSystem extends Subsystem {
 		// TODO Move this somewhere else
 		SmartDashboard.putData("Gyro", navx);
 
-		drive.tankDrive(leftSpeed, rightSpeed);
+		System.out.println("Front left wheel " + frontLeftWheel.getOutputCurrent());
+		System.out.println("Front Right wheel " + frontRightWheel.getOutputCurrent());
+		System.out.println("Back right wheel " + backRightWheel.getOutputCurrent());
+		System.out.println("Back left wheel " + backLeftWheel.getOutputCurrent());
+
+		if (drivereversed) {
+			drive.tankDrive(leftSpeed * -1, rightSpeed * -1);
+		} else {
+			drive.tankDrive(leftSpeed, rightSpeed);
+		}
 	}
-	
+
+	public void setDriveReverse(boolean reverse) {
+		drivereversed = reverse;
+	}
+
+	public boolean getDriveReversed() {
+		return drivereversed;
+	}
+
 	public void drive(double speed, double angle) {
 		drive.drive(speed, angle);
 	}
@@ -69,7 +89,6 @@ public class DriveSystem extends Subsystem {
 	public void setFifthWheel(double speed) {
 		fifthWheel.set(speed);
 	}
-
 
 	public void resetGyro() {
 		navx.reset();

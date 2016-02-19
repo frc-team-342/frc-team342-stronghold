@@ -5,6 +5,7 @@ import org.usfirst.frc.team342.robot.commands.drive.DriveStop;
 import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 import org.usfirst.frc.team342.robot.commands.drive.LowerTurnWheel;
 import org.usfirst.frc.team342.robot.commands.drive.RaiseTurnWheel;
+import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmOut;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
@@ -49,6 +50,9 @@ public class OI {
 	private static final int RIGHT_BUMPER = 6;
 	private static final int LEFT_TRIGGER = 7;
 	private static final int RIGHT_TRIGGER = 8;
+	
+	private static final int START_BUTTON = 10;
+	private static final int BACK_BUTTON = 9;
 
 	private static final int NO_BUTTON = 100;
 
@@ -61,14 +65,18 @@ public class OI {
 
 		// Camera
 		mapCommand(X_BUTTON, new ChangeCamera());
+		
+		// Test Camera
+		mapCommand(START_BUTTON, new ChangeCamera());
 
 		// Drive
 		mapCommand(A_BUTTON, new LowerTurnWheel(), new DriveStop());
 		mapCommand(B_BUTTON, new RaiseTurnWheel(), new DriveStop());
 
 		// Arm
-		mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
-		mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
+		//mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
+		//mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
+		mapCommand(Y_BUTTON, new ReverseRobotOrientation());
 
 		// Collector
 		mapCommand(LEFT_BUMPER, new CollectorIn(), new StopCollector());

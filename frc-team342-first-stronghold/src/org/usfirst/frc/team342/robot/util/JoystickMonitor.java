@@ -31,6 +31,10 @@ public class JoystickMonitor extends Trigger {
 			return rightStick;
 		}
 	}
+	
+	/*
+	 * public void 
+	 */
 
 	private final JoystickEvent lastEvent;
 

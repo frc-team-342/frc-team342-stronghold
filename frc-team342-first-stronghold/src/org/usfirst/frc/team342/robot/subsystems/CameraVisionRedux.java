@@ -4,9 +4,11 @@ import org.usfirst.frc.team342.robot.commands.camera.SeeWithCamera;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.VisionException;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 /** !!!!! ABANDON HOPE ALL YE' WHO ENTER HERE !!!!! <br>
  * Nobody understood the camera vision code when it was first written, so
@@ -38,8 +40,8 @@ d __ ___.-''-. _____b
 public class CameraVisionRedux extends Subsystem {
 	// There is a problem with camera names changing. If a change is
 	// suspected, find the correct name using the roborio web interface.
-	private static final String CAMERA_1 = "cam1";
-	private static final String CAMERA_2 = "cam2";
+	private static final String CAMERA_1 = "cam0";
+	private static final String CAMERA_2 = "cam1";
 
 	/* The quality of the compressed image sent to the smartDashboard. Used
 	 * by the camera servers setQuality() method. */
@@ -75,6 +77,7 @@ public class CameraVisionRedux extends Subsystem {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			System.out.println("First camera failed");
+			FRCNetworkCommunicationsLibrary.HALSetErrorData("First Camera Failed");
 			failure = true;
 		}
 
@@ -86,6 +89,7 @@ public class CameraVisionRedux extends Subsystem {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			System.out.println("Second camera failed");
+			FRCNetworkCommunicationsLibrary.HALSetErrorData("Second Camera Failed");
 			failure = true;
 		}
 
@@ -118,12 +122,25 @@ public class CameraVisionRedux extends Subsystem {
 	/* This Switches the camera by stopping the capture then changing the
 	 * current camera id then restarting on a new camera. */
 	public void ChangeCamera() {
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Change Camera Got To Change Camera");
 		if (!failure) {
 			NIVision.IMAQdxStopAcquisition(curCam);
 			NIVision.IMAQdxUnconfigureAcquisition(curCam);
 			System.out.println("Switching Camera ID From" + curCam);
+			FRCNetworkCommunicationsLibrary.HALSetErrorData("Change Camera Test");
 			// Swap cameras using ternary operator.
-			curCam = (curCam == frontCam) ? backCam : frontCam;
+			//curCam = (curCam == frontCam) ? backCam : frontCam;
+			try{
+				if(curCam == frontCam){
+			
+				curCam = backCam;
+			}else {
+				curCam = frontCam;
+			}
+			}catch(VisionException error){
+				
+				FRCNetworkCommunicationsLibrary.HALSetErrorData("" + error);
+			}
 			System.out.println("New Camera ID" + curCam);
 			try {
 				NIVision.IMAQdxConfigureGrab(curCam);
