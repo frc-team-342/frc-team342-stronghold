@@ -10,25 +10,25 @@ public class ShootHighPower extends Command {
 	private static final double SPEED = 1.0;
 
 	/** Shoot the ball long range. */
-    public ShootHighPower() {
-    	shooter = BoulderController.getInstance();
-    	requires(shooter);
-    }
+	public ShootHighPower() {
+		shooter = BoulderController.getInstance();
+		requires(shooter);
+	}
 
-    protected void initialize() {
-    }
+	protected void initialize() {
+	}
 
-    protected void execute() {
-    	shooter.setShooterSpeed(SPEED);
-    }
+	protected void execute() {
+		shooter.setShooterSpeed(SPEED);
+	}
 
-    protected boolean isFinished() {
-        return true;
-    }
+	protected boolean isFinished() {
+		return true;
+	}
 
-    protected void end() {
-    }
+	protected void end() {
+	}
 
-    protected void interrupted() {
-    }
+	protected void interrupted() {
+	}
 }

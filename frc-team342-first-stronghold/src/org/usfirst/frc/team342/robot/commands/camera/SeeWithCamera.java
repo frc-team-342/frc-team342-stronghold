@@ -20,7 +20,7 @@ public class SeeWithCamera extends Command {
 
 	@Override
 	protected void execute() {
-		camera.grapImage();
+		camera.grabImage();
 	}
 
 	@Override

@@ -10,25 +10,25 @@ public class ShootLowPower extends Command {
 	private BoulderController shooter;
 
 	/** Shoot a ball a short distance from the robot. */
-    public ShootLowPower() {
-    	shooter = BoulderController.getInstance();
-    	requires(shooter);
-    }
+	public ShootLowPower() {
+		shooter = BoulderController.getInstance();
+		requires(shooter);
+	}
 
-    protected void initialize() {
-    }
+	protected void initialize() {
+	}
 
-    protected void execute() {
-    	shooter.setShooterSpeed(SPEED);
-    }
+	protected void execute() {
+		shooter.setShooterSpeed(SPEED);
+	}
 
-    protected boolean isFinished() {
-        return true;
-    }
+	protected boolean isFinished() {
+		return true;
+	}
 
-    protected void end() {
-    }
+	protected void end() {
+	}
 
-    protected void interrupted() {
-    }
+	protected void interrupted() {
+	}
 }

@@ -6,49 +6,52 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CollectBall extends Command {
-	// Arm
-	private static final double ARM_SPEED = 0.7;
-	private static final double ARM_DELAY = 3;
-
 	// Collector
 	private static final double TIMER_DELAY = 0.5;
 	private static final double COLLECT_SPEED = 0.7;
 
 	// Current value to detect ball
-	private static final double BALL_VOLTAGE = 1.2;
+	private static final double BALL_CURRENT = 1.2;
 
 	private BoulderController shooter;
+
+	private boolean timerOver;
+	private boolean continueDetectingCurrent;
+
+	private boolean firstIteration;
 
 	/** Collect a ball. */
 	public CollectBall() {
 		shooter = BoulderController.getInstance();
 		requires(shooter);
+
+		timerOver = false;
+		firstIteration = true;
+		continueDetectingCurrent = true;
 	}
 
 	@Override
 	protected void initialize() {
-		// Push the arm out to prepare for the ball.
-		shooter.setArmSpeed(ARM_SPEED);
-		Timer.delay(ARM_DELAY);
-		shooter.stopArm();
-
-		// Start the collector, but wait for the current spike to stop.
 		shooter.setCollectorSpeed(COLLECT_SPEED);
-		// TODO Test the effect of delay to make sure other commands still
-		// run. Consider reading a timer value inside of the execute loop
-		// instead. Timer is also used in PushBall command.
-		Timer.delay(TIMER_DELAY);
 	}
 
 	@Override
 	protected void execute() {
+		// Only read the voltage after the current has had a chance to drop.
+		timerOver = timerOver || timeSinceInitialized() > TIMER_DELAY;
+		if (timerOver && firstIteration && (shooter.getCollectorCurrent() > BALL_CURRENT)) {
+			continueDetectingCurrent = false;
+		}
 	}
 
-	/** Finishes when a ball is goes in the collector, causing a current
-	 * spike. */
+	/**
+	 * Finishes when a ball is goes in the collector, causing a current spike,
+	 * but only if the ball wasn't already detecting a ball as being in the
+	 * robot.
+	 */
 	@Override
 	protected boolean isFinished() {
-		return shooter.getCollectorCurrent() > BALL_VOLTAGE;
+		return !continueDetectingCurrent && shooter.getCollectorCurrent() > BALL_CURRENT;
 	}
 
 	@Override

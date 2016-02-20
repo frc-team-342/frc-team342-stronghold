@@ -7,6 +7,7 @@ import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	private static final String WIN_MESSAGE = "Teleop Initialized, Win... Or Else! (JK)";
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -27,6 +30,7 @@ public class Robot extends IterativeRobot {
 		BoulderController.getInstance();
 
 		OI.initInstance();
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Robot Initialized. Ready for Action!");
 	}
 
 	/**
@@ -42,6 +46,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Autonomous Initialized, STAND CLEAR");
 	}
 
 	/** This function is called periodically during autonomous */
@@ -58,6 +63,7 @@ public class Robot extends IterativeRobot {
 		// if (autonomousCommand != null) {
 		// autonomousCommand.cancel();
 		// }
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(WIN_MESSAGE);
 	}
 
 	/** This function is called periodically during operator control */

@@ -8,26 +8,26 @@ public class StopShooter extends Command {
 	private BoulderController shooter;
 
 	/** Stops only the shoot motor. */
-    public StopShooter() {
-    	shooter = BoulderController.getInstance();
-    	requires(shooter);
-    }
+	public StopShooter() {
+		shooter = BoulderController.getInstance();
+		requires(shooter);
+	}
 
-    protected void initialize() {
-    	shooter.stopShooter();
-    }
+	protected void initialize() {
+		shooter.stopShooter();
+	}
 
-    protected void execute() {
-    }
+	protected void execute() {
+	}
 
-    protected boolean isFinished() {
-        return true;
-    }
+	protected boolean isFinished() {
+		return true;
+	}
 
-    protected void end() {
-    }
+	protected void end() {
+	}
 
-    protected void interrupted() {
-    	shooter.stopAll();
-    }
+	protected void interrupted() {
+		shooter.stopAll();
+	}
 }

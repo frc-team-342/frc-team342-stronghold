@@ -10,18 +10,22 @@ public class BoulderController extends Subsystem {
 
 	/** Controls the launcher for long-range shooting. */
 	private CANTalon shooterMotor;
-	/** Controls the assembly that grabs and releases a ball for short range
-	 * control. */
+	/**
+	 * Controls the assembly that grabs and releases a ball for short range
+	 * control.
+	 */
 	private CANTalon collectorMotor;
 	/** Controls the angle of the shooter and collector. */
 	private CANTalon armMotor;
 
-	/** The system for managing collecting and shooting boulders. It
-	 * consists of three parts: an arm, a collector and a shooter. The arm
-	 * controls the angle of the collector. The collector is a frame that
-	 * has one spinning rod which can grab and release a ball. The ball is
-	 * held by compression. The shooter shoots like a cannon using a ball
-	 * obtained from the collector. */
+	/**
+	 * The system for managing collecting and shooting boulders. It consists of
+	 * three parts: an arm, a collector and a shooter. The arm controls the
+	 * angle of the collector. The collector is a frame that has one spinning
+	 * rod which can grab and release a ball. The ball is held by compression.
+	 * The shooter shoots like a cannon using a ball obtained from the
+	 * collector.
+	 */
 	public BoulderController() {
 		shooterMotor = new CANTalon(RobotMap.SHOOTER_MOTOR_CAN_TALON);
 		collectorMotor = new CANTalon(RobotMap.COLLECTOR_MOTOR_CAN_TALON);
@@ -42,8 +46,10 @@ public class BoulderController extends Subsystem {
 		armMotor.set(speed);
 	}
 
-	/** Set the speed for the collecor. Positive values will pull a ball in,
-	 * negatives will relese a ball. */
+	/**
+	 * Set the speed for the collecor. Positive values will pull a ball in,
+	 * negatives will relese a ball.
+	 */
 	public void setCollectorSpeed(double speed) {
 		collectorMotor.set(speed);
 	}

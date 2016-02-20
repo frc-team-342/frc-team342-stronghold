@@ -7,26 +7,26 @@ import edu.wpi.first.wpilibj.command.Command;
 public class StopArm extends Command {
 	private BoulderController arm;
 
-    public StopArm() {
-    	arm = BoulderController.getInstance();
-    	requires(arm);
-    }
+	public StopArm() {
+		arm = BoulderController.getInstance();
+		requires(arm);
+	}
 
-    protected void initialize() {
-    	arm.stopArm();
-    }
+	protected void initialize() {
+		arm.stopArm();
+	}
 
-    protected void execute() {
-    }
+	protected void execute() {
+	}
 
-    protected boolean isFinished() {
-        return true;
-    }
+	protected boolean isFinished() {
+		return true;
+	}
 
-    protected void end() {
-    }
+	protected void end() {
+	}
 
-    protected void interrupted() {
-    	arm.stopAll();
-    }
+	protected void interrupted() {
+		arm.stopAll();
+	}
 }

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team342.robot.subsystems;
 
 import org.usfirst.frc.team342.robot.RobotMap;
+import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -9,10 +10,8 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
-
 	private static final DriveSystem instance = new DriveSystem();
 
 	/** Drive wheels. */
@@ -24,14 +23,11 @@ public class DriveSystem extends Subsystem {
 	/** Drive system to control the wheels. */
 	private final RobotDrive drive;
 
-	/** We use a fifth wheel that is lowered to make turning work. */
-	private final CANTalon fifthWheel;
-
 	/** Navx device from kauilabs. */
 	private final AHRS navx;
 
 	private final AnalogInput ultrasonic;
-	private boolean drivereversed;
+	private boolean driveReversed;
 
 	/** Controls and senses driving of the robot. */
 	private DriveSystem() {
@@ -46,12 +42,10 @@ public class DriveSystem extends Subsystem {
 		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
 
-		fifthWheel = new CANTalon(RobotMap.TURNING_WHEEL_CAN_TALON);
-
 		navx = new AHRS(SerialPort.Port.kMXP);
 
 		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
-		drivereversed = false;
+		driveReversed = false;
 	}
 
 	public static DriveSystem getInstance() {
@@ -59,15 +53,10 @@ public class DriveSystem extends Subsystem {
 	}
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		// TODO Move this somewhere else
-		SmartDashboard.putData("Gyro", navx);
+		// TODO Move the gryo data somewhere else
+		// SmartDashboard.putData("Gyro", navx);
 
-		System.out.println("Front left wheel " + frontLeftWheel.getOutputCurrent());
-		System.out.println("Front Right wheel " + frontRightWheel.getOutputCurrent());
-		System.out.println("Back right wheel " + backRightWheel.getOutputCurrent());
-		System.out.println("Back left wheel " + backLeftWheel.getOutputCurrent());
-
-		if (drivereversed) {
+		if (driveReversed) {
 			drive.tankDrive(leftSpeed * -1, rightSpeed * -1);
 		} else {
 			drive.tankDrive(leftSpeed, rightSpeed);
@@ -75,19 +64,15 @@ public class DriveSystem extends Subsystem {
 	}
 
 	public void setDriveReverse(boolean reverse) {
-		drivereversed = reverse;
+		driveReversed = reverse;
 	}
 
 	public boolean getDriveReversed() {
-		return drivereversed;
+		return driveReversed;
 	}
 
 	public void drive(double speed, double angle) {
 		drive.drive(speed, angle);
-	}
-
-	public void setFifthWheel(double speed) {
-		fifthWheel.set(speed);
 	}
 
 	public void resetGyro() {
@@ -105,11 +90,11 @@ public class DriveSystem extends Subsystem {
 	/** Set all motor values to zero. */
 	public void stop() {
 		drive.stopMotor();
-		fifthWheel.set(0);
 	}
 
 	@Override
 	protected void initDefaultCommand() {
+		(new DriveWithJoystick()).start();
 	}
 
 }

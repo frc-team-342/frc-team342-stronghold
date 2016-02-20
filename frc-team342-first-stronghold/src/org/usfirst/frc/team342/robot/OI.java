@@ -1,23 +1,7 @@
 package org.usfirst.frc.team342.robot;
 
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
-import org.usfirst.frc.team342.robot.commands.drive.DriveStop;
-import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
-import org.usfirst.frc.team342.robot.commands.drive.LowerTurnWheel;
-import org.usfirst.frc.team342.robot.commands.drive.RaiseTurnWheel;
 import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
-import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
-import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmOut;
-import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
-import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectBall;
-import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorIn;
-import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorOut;
-import org.usfirst.frc.team342.robot.commands.shootersystem.collector.PushBall;
-import org.usfirst.frc.team342.robot.commands.shootersystem.collector.StopCollector;
-import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootHighPower;
-import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootLowPower;
-import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.StopShooter;
-import org.usfirst.frc.team342.robot.util.JoystickMonitor;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -50,7 +34,7 @@ public class OI {
 	private static final int RIGHT_BUMPER = 6;
 	private static final int LEFT_TRIGGER = 7;
 	private static final int RIGHT_TRIGGER = 8;
-	
+
 	private static final int START_BUTTON = 10;
 	private static final int BACK_BUTTON = 9;
 
@@ -58,35 +42,32 @@ public class OI {
 
 	private OI() {
 		joypad = new Joystick(0);
-		// Start the drive joystick
-		enableJoystickDetection();
 
 		// TODO Decide which buttons to map to what commands
 
 		// Camera
-		mapCommand(X_BUTTON, new ChangeCamera());
-		
-		// Test Camera
 		mapCommand(START_BUTTON, new ChangeCamera());
 
 		// Drive
-		mapCommand(A_BUTTON, new LowerTurnWheel(), new DriveStop());
-		mapCommand(B_BUTTON, new RaiseTurnWheel(), new DriveStop());
+		// mapCommand(A_BUTTON, new LowerTurnWheel(), new DriveStop());
+		// mapCommand(B_BUTTON, new RaiseTurnWheel(), new DriveStop());
 
 		// Arm
-		//mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
-		//mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
-		mapCommand(Y_BUTTON, new ReverseRobotOrientation());
-
-		// Collector
-		mapCommand(LEFT_BUMPER, new CollectorIn(), new StopCollector());
-		mapCommand(RIGHT_TRIGGER, new CollectorOut(), new StopCollector());
-		mapCommand(LEFT_TRIGGER, new CollectBall());
-		mapCommand(RIGHT_BUMPER, new PushBall());
-
-		// Shooter
-		mapCommand(X_BUTTON, new ShootHighPower(), new StopShooter());
-		mapCommand(X_BUTTON, new ShootLowPower(), new StopShooter());
+		// mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
+		// mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
+		mapCommand(BACK_BUTTON, new ReverseRobotOrientation());
+		//
+		// // Collector
+		// mapCommand(RIGHT_TRIGGER, new CollectorIn(), new StopCollector());
+		// mapCommand(RIGHT_BUMPER, new CollectorOut(), new StopCollector());
+		// mapCommand(A_BUTTON, new CollectBall());
+		// mapCommand(B_BUTTON, new StopCollector());
+		//
+		// mapCommand(X_BUTTON, new PushBall());
+		//
+		// // Shooter
+		// mapCommand(LEFT_TRIGGER, new ShootHighPower(), new StopShooter());
+		// mapCommand(LEFT_BUMPER, new ShootLowPower(), new StopShooter());
 
 	}
 
@@ -95,23 +76,6 @@ public class OI {
 		// Does nothing other than initializing instance if it isn't
 		// already initialized. */
 		instance.toString();
-	}
-
-	/**
-	 * Enables teleop driving with joystick using a home-made Trigger for
-	 * joystick detection.
-	 */
-	private void enableJoystickDetection() {
-		// Create monitor to send commands when the joystick is used.
-		JoystickMonitor mon = new JoystickMonitor(joypad, false);
-
-		// Drive with joystick values when the joystick is in use.
-		DriveWithJoystick driveStartCommand = new DriveWithJoystick(mon.getLastEvent());
-		mon.whileActive(driveStartCommand);
-
-		// Stop when the joystick is in the deadzone.
-		DriveStop driveStopCommand = new DriveStop();
-		mon.whenInactive(driveStopCommand);
 	}
 
 	/**
