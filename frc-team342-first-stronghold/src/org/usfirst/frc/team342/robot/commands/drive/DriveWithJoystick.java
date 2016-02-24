@@ -41,6 +41,8 @@ public class DriveWithJoystick extends Command {
 		// Detect the deadzone.
 		if (Math.abs(left) + Math.abs(right) > JOYSTICK_DEADZONE) {
 			drive.tankDrive(left, right);
+		} else {
+			drive.tankDrive(0, 0);
 		}
 	}
 

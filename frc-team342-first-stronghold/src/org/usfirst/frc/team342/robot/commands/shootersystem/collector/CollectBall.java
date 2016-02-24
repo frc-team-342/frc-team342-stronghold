@@ -25,13 +25,14 @@ public class CollectBall extends Command {
 		shooter = BoulderController.getInstance();
 		requires(shooter);
 
-		timerOver = false;
-		firstIteration = true;
-		continueDetectingCurrent = true;
+	
 	}
 
 	@Override
 	protected void initialize() {
+		timerOver = false;
+		firstIteration = true;
+		continueDetectingCurrent = true;
 		shooter.setCollectorSpeed(COLLECT_SPEED);
 	}
 
@@ -39,6 +40,7 @@ public class CollectBall extends Command {
 	protected void execute() {
 		// Only read the voltage after the current has had a chance to drop.
 		timerOver = timerOver || timeSinceInitialized() > TIMER_DELAY;
+		System.out.println(timeSinceInitialized());
 		if (timerOver && firstIteration && (shooter.getCollectorCurrent() > BALL_CURRENT)) {
 			continueDetectingCurrent = false;
 		}

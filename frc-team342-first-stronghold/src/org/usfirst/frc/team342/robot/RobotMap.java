@@ -11,20 +11,21 @@ public class RobotMap {
 	 * The default value for motors which are not currently on the robot. This
 	 * should throw an exception if the motor is used in code but not wired.
 	 */
+	
 	public static final int UNINITIALIZED_MOTOR = 63;
-
+	//Insert hacks here   
 	// Drive Board \/ // Drive Motors
-	public static final int FRONT_RIGHT_WHEEL_CAN_TALON = 1;
-	public static final int FRONT_LEFT_WHEEL_CAN_TALON = 2;
-	public static final int BACK_RIGHT_WHEEL_CAN_TALON = 3;
-	public static final int BACK_LEFT_WHEEL_CAN_TALON = 4;
-
+	// public static final int FRONT_RIGHT_WHEEL_CAN_TALON = 1;
+	// public static final int FRONT_LEFT_WHEEL_CAN_TALON = 2;
+	// public static final int BACK_RIGHT_WHEEL_CAN_TALON = 3;
+	// public static final int BACK_LEFT_WHEEL_CAN_TALON = 4;
+	// insert hacks here
+	
 	// Test Board \/ // Drive Motors
-	// public static final int
-	// FRONT_RIGHT_WHEEL_CAN_TALON = 26; public static final int
-	// FRONT_LEFT_WHEEL_CAN_TALON = 28; public static final int
-	// BACK_RIGHT_WHEEL_CAN_TALON = 27; public static final int
-	// BACK_LEFT_WHEEL_CAN_TALON = 25;
+	public static final int FRONT_RIGHT_WHEEL_CAN_TALON = 2;
+	public static final int FRONT_LEFT_WHEEL_CAN_TALON = 1;
+	public static final int BACK_RIGHT_WHEEL_CAN_TALON = 4;
+	public static final int BACK_LEFT_WHEEL_CAN_TALON = 3;
 
 	// Shooter motors
 	public static final int COLLECTOR_MOTOR_CAN_TALON = 6;

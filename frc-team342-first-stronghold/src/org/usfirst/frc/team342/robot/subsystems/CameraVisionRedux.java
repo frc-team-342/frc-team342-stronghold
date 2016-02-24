@@ -48,7 +48,7 @@ public class CameraVisionRedux extends Subsystem {
 	 * The quality of the compressed image sent to the smartDashboard. Used by
 	 * the camera servers setQuality() method.
 	 */
-	private static final int CAMERA_QUALITY = 100;
+	private static final int CAMERA_QUALITY = 80;
 
 	private static final CameraVisionRedux INSTANCE = new CameraVisionRedux();
 

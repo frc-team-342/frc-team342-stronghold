@@ -94,7 +94,6 @@ public class DriveSystem extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		(new DriveWithJoystick()).start();
 	}
 
 }

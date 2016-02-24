@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team342.robot;
 
+import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 import org.usfirst.frc.team342.robot.subsystems.CameraVisionRedux;
 import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
@@ -18,7 +19,8 @@ import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
  */
 public class Robot extends IterativeRobot {
 	private static final String WIN_MESSAGE = "Teleop Initialized, Win... Or Else! (JK)";
-
+	private DriveWithJoystick joydrive;
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -64,11 +66,16 @@ public class Robot extends IterativeRobot {
 		// autonomousCommand.cancel();
 		// }
 		FRCNetworkCommunicationsLibrary.HALSetErrorData(WIN_MESSAGE);
+		joydrive = new DriveWithJoystick();
+		
+		
 	}
 
 	/** This function is called periodically during operator control */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		joydrive.start();
+		
 	}
 
 	/** This function is called periodically during test mode */

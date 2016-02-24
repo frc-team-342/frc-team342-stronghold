@@ -1,7 +1,17 @@
 package org.usfirst.frc.team342.robot;
 
+import org.usfirst.frc.team342.robot.commands.DriveChange_Reverse;
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
 import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmOut;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectBall;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorOut;
+import org.usfirst.frc.team342.robot.commands.shootersystem.collector.StopCollector;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootHighPower;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.ShootLowPower;
+import org.usfirst.frc.team342.robot.commands.shootersystem.shoot.StopShooter;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -21,7 +31,7 @@ public class OI {
 
 	/** Create joystick from port 0. */
 	// TODO Document our controller here
-	private final Joystick joypad;
+	private final Joystick 	joypad;
 
 	// Map Joypad Buttons
 	// TODO Finish Mapping Buttons
@@ -46,28 +56,28 @@ public class OI {
 		// TODO Decide which buttons to map to what commands
 
 		// Camera
-		mapCommand(START_BUTTON, new ChangeCamera());
+		 mapCommand(START_BUTTON, new ChangeCamera());
 
 		// Drive
 		// mapCommand(A_BUTTON, new LowerTurnWheel(), new DriveStop());
 		// mapCommand(B_BUTTON, new RaiseTurnWheel(), new DriveStop());
 
 		// Arm
-		// mapCommand(Y_BUTTON, new ArmIn(), new StopArm());
-		// mapCommand(RIGHT_BUMPER, new ArmOut(), new StopArm());
-		mapCommand(BACK_BUTTON, new ReverseRobotOrientation());
-		//
+		 mapCommand(LEFT_TRIGGER, new ArmIn(), new StopArm());
+		 mapCommand(LEFT_BUMPER, new ArmOut(), new StopArm());
+		 mapCommand(BACK_BUTTON, new DriveChange_Reverse());
+
 		// // Collector
 		// mapCommand(RIGHT_TRIGGER, new CollectorIn(), new StopCollector());
-		// mapCommand(RIGHT_BUMPER, new CollectorOut(), new StopCollector());
-		// mapCommand(A_BUTTON, new CollectBall());
-		// mapCommand(B_BUTTON, new StopCollector());
+		 mapCommand(X_BUTTON, new CollectorOut(), new StopCollector());
+		 mapCommand(A_BUTTON, new CollectBall());
+		 mapCommand(B_BUTTON, new StopCollector());
 		//
 		// mapCommand(X_BUTTON, new PushBall());
 		//
 		// // Shooter
-		// mapCommand(LEFT_TRIGGER, new ShootHighPower(), new StopShooter());
-		// mapCommand(LEFT_BUMPER, new ShootLowPower(), new StopShooter());
+		 mapCommand(RIGHT_TRIGGER, new ShootHighPower(), new StopShooter());
+		 mapCommand(RIGHT_BUMPER, new ShootLowPower(), new StopShooter());
 
 	}
 
@@ -107,3 +117,4 @@ public class OI {
 		button.whenReleased(WhenReleased);
 	}
 }
+
