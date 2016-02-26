@@ -12,7 +12,6 @@ public class ShootLowPower extends Command {
 	/** Shoot a ball a short distance from the robot. */
 	public ShootLowPower() {
 		shooter = BoulderController.getInstance();
-		requires(shooter);
 	}
 
 	protected void initialize() {
@@ -23,12 +22,14 @@ public class ShootLowPower extends Command {
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	protected void end() {
+		shooter.stopShooter();
 	}
 
 	protected void interrupted() {
+		shooter.stopShooter();
 	}
 }

@@ -37,5 +37,7 @@ public class RobotMap {
 
 	// Ultrisonic Sensor
 	public static final int ULTRASONIC_ANALOG = 1;
+	
+	public static final int POTENTIOMETER_ANALOG = 0;
 
 }

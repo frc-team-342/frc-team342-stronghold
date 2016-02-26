@@ -26,18 +26,17 @@ public class CollectorOut extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return true;
-		
+		return false;
 	}
 
 	@Override
 	protected void end() {
-		
+		shooter.stopCollector();
 	}
 
 	@Override
 	protected void interrupted() {
-		shooter.stopAll();
+		shooter.stopCollector();
 	}
 
 }

@@ -12,7 +12,6 @@ public class ShootHighPower extends Command {
 	/** Shoot the ball long range. */
 	public ShootHighPower() {
 		shooter = BoulderController.getInstance();
-		requires(shooter);
 	}
 
 	protected void initialize() {
@@ -23,12 +22,14 @@ public class ShootHighPower extends Command {
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	protected void end() {
+		shooter.stopShooter();
 	}
 
 	protected void interrupted() {
+		shooter.stopShooter();
 	}
 }

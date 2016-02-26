@@ -1,7 +1,6 @@
 package org.usfirst.frc.team342.robot.subsystems;
 
 import org.usfirst.frc.team342.robot.RobotMap;
-import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -10,6 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
 	private static final DriveSystem instance = new DriveSystem();
@@ -22,6 +22,7 @@ public class DriveSystem extends Subsystem {
 
 	/** Drive system to control the wheels. */
 	private final RobotDrive drive;
+
 
 	/** Navx device from kauilabs. */
 	private final AHRS navx;
@@ -39,6 +40,7 @@ public class DriveSystem extends Subsystem {
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
+
 		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
 
@@ -54,7 +56,7 @@ public class DriveSystem extends Subsystem {
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		// TODO Move the gryo data somewhere else
-		// SmartDashboard.putData("Gyro", navx);
+		SmartDashboard.putData("Gyro", navx);
 
 		if (driveReversed) {
 			drive.tankDrive(leftSpeed * -1, rightSpeed * -1);

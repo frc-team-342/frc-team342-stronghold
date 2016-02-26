@@ -13,7 +13,7 @@ public class DriveStraight extends Command {
 	 * Proportional correction constant. Higher values give faster correction,
 	 * but may cause over-steering.
 	 */
-	private static final double KP = 0.5;
+	private static final double KP = 0.1;
 	private static final double SPEED = 0.7;
 
 	private DriveSystem drive;
@@ -46,7 +46,7 @@ public class DriveStraight extends Command {
 	/** Runs on a timer. */
 	@Override
 	protected boolean isFinished() {
-		return timeSinceInitialized() <= RUN_TIME;
+		return timeSinceInitialized() >= RUN_TIME;
 	}
 
 	@Override

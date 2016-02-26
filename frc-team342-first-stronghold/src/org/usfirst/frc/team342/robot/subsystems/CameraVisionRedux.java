@@ -87,9 +87,10 @@ public class CameraVisionRedux extends Subsystem {
 
 		try {
 			backCam = NIVision.IMAQdxOpenCamera(CAMERA_2, NIVision.IMAQdxCameraControlMode.CameraControlModeListener);
-			
-			//If the first cam fails then set it equal to back cam and only use the back camera.
-			if(failure == true){
+
+			// If the first cam fails then set it equal to back cam and only use
+			// the back camera.
+			if (failure == true) {
 				frontCam = backCam;
 				failure = false;
 			}
@@ -104,7 +105,7 @@ public class CameraVisionRedux extends Subsystem {
 
 		// Default camera is Front Camera
 		curCam = frontCam;
-		if (failure == false) {
+		if (!failure) {
 			NIVision.IMAQdxConfigureGrab(curCam);
 			NIVision.IMAQdxStartAcquisition(curCam);
 		}
@@ -122,7 +123,7 @@ public class CameraVisionRedux extends Subsystem {
 	}
 
 	public void grabImage() {
-		if(failure == false){
+		if (!failure) {
 			NIVision.IMAQdxGrab(curCam, frame, 0);
 			camServer.setImage(frame);
 		}
@@ -149,7 +150,7 @@ public class CameraVisionRedux extends Subsystem {
 					curCam = frontCam;
 				}
 			} catch (VisionException error) {
-
+				failure = true;
 				FRCNetworkCommunicationsLibrary.HALSetErrorData("" + error);
 			}
 			System.out.println("New Camera ID" + curCam);
@@ -157,6 +158,7 @@ public class CameraVisionRedux extends Subsystem {
 				NIVision.IMAQdxConfigureGrab(curCam);
 				NIVision.IMAQdxStartAcquisition(curCam);
 			} catch (Exception e) {
+				failure = true;
 				System.out.println("INoWork,5 yin ");
 			}
 		}

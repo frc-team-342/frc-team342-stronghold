@@ -11,8 +11,6 @@ public class DriveWithJoystick extends Command {
 
 	private static final int JOY_PAD_NUMBER = 0;
 
-	private static final double JOYSTICK_DEADZONE = 0.25;
-
 	private DriveSystem drive;
 	/** Used to access joystick position. */
 	private Joystick joystick;
@@ -39,11 +37,7 @@ public class DriveWithJoystick extends Command {
 		double right = joystick.getRawAxis(RIGHT_STICK);
 
 		// Detect the deadzone.
-		if (Math.abs(left) + Math.abs(right) > JOYSTICK_DEADZONE) {
-			drive.tankDrive(left, right);
-		} else {
-			drive.tankDrive(0, 0);
-		}
+		drive.tankDrive(left, right);
 	}
 
 	protected boolean isFinished() {
