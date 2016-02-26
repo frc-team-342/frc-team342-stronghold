@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmOut extends Command {
 	private static final double SPEED = -0.8;
-
 	private BoulderController arm;
 
 	private boolean armAtLimit;
@@ -21,7 +20,7 @@ public class ArmOut extends Command {
 	}
 
 	protected void execute() {
-		// The arm speed method returns true if the arm is at its limit.
+		// 
 		armAtLimit = arm.setArmSpeed(SPEED);
 	}
 
@@ -34,6 +33,6 @@ public class ArmOut extends Command {
 	}
 
 	protected void interrupted() {
-		arm.stopArm();
+		arm.stopAll();
 	}
 }

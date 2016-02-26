@@ -13,20 +13,23 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/** The VM is configured to automatically run this class, and to call the
+/**
+ * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
  * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the
- * resource directory. */
+ * creating this project, you must also update the manifest file in the resource
+ * directory.
+ */
 public class Robot extends IterativeRobot {
 	private static final String WIN_MESSAGE = "Teleop Initialized, Win... Or Else! (JK)";
-
-	private static final String USE_AUTONOMOUS_KEY = "DO OW TOWN OH MUSE!!1!!!!";
-	private static final String AUTONOMOUS_LOWBAR_MODE = "DIG TUNNELL UNDER LOW BAR";
+	private static final String AUTONOMOUS_ENABLED = "auto message here";
+	private static final String AUTONMOUS_DRIVE_UNDER_LOWBAR = "auto drive under low bar message";
 	private DriveWithJoystick joydrive;
 
-	/** This function is run when the robot is first started up and should
-	 * be used for any initialization code. */
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
+	 */
 	public void robotInit() {
 		// Initialize subsystems.
 		DriveSystem.getInstance();
@@ -34,15 +37,16 @@ public class Robot extends IterativeRobot {
 		BoulderController.getInstance();
 
 		OI.initInstance();
-		FRCNetworkCommunicationsLibrary
-				.HALSetErrorData("Robot Initialized. Ready for Action!");
-		SmartDashboard.putBoolean(USE_AUTONOMOUS_KEY, true);
-		SmartDashboard.putBoolean(AUTONOMOUS_LOWBAR_MODE, false);
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Robot Initialized. Ready for Action!");
+		SmartDashboard.putBoolean(AUTONOMOUS_ENABLED, true);
+		SmartDashboard.putBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR, false);
 	}
 
-	/** This function is called once each time the robot enters Disabled
-	 * mode. You can use it to reset any subsystem information you want to
-	 * clear when the robot is disabled. */
+	/**
+	 * This function is called once each time the robot enters Disabled mode.
+	 * You can use it to reset any subsystem information you want to clear when
+	 * the robot is disabled.
+	 */
 	public void disabledInit() {
 
 	}
@@ -53,16 +57,19 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		if (SmartDashboard.getBoolean(USE_AUTONOMOUS_KEY)) {
-			if (SmartDashboard.getBoolean(AUTONOMOUS_LOWBAR_MODE)) {
-				new DriveUnderLowBar();
+		if (SmartDashboard.getBoolean(AUTONOMOUS_ENABLED)) {
+			FRCNetworkCommunicationsLibrary.HALSetErrorData("Autonomous Initialized, STAND CLEAR");
+			
+			if (SmartDashboard.getBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR)) {
+				new DriveUnderLowBar().start();
+				FRCNetworkCommunicationsLibrary.HALSetErrorData("Autonomous Drive Under Low Bar Enabled, Stand Double Clear!");
 			} else {
 				new DriveStraight().start();
+				FRCNetworkCommunicationsLibrary.HALSetErrorData("Autonomus Drive Straight Enabled, Watch Out! :D");
 			}
 		} else {
-			// Pretend to not be a robot
-			FRCNetworkCommunicationsLibrary
-					.HALSetErrorData("Autonomous Disabled, Do Nothing");
+			// DO NOTHING
+			FRCNetworkCommunicationsLibrary.HALSetErrorData("Autonomous Disabled, Do Nothing");
 		}
 	}
 
