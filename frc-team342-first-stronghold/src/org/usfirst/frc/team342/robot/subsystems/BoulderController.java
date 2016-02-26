@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class BoulderController extends Subsystem {
 	private static final BoulderController instance = new BoulderController();
 
-	private static final double ARM_OUT_ENCODER = 0.005;
+	private static final double ARM_OUT_ENCODER = 0.1;
 	private static final double ARM_IN_ENCODER = 2.1;
 
 	/** Controls the launcher for long-range shooting. */
@@ -58,6 +58,11 @@ public class BoulderController extends Subsystem {
 	public boolean setArmSpeed(double speed) {
 		boolean isAtLimit = false;
 		double curVal = potentiometer.getVoltage();
+
+		// Take out start
+
+		// curVal = ARM_IN_ENCODER + 1;
+		// Take out end
 
 		if ((curVal < ARM_IN_ENCODER || speed > 0) && (curVal > ARM_OUT_ENCODER || speed < 0)) {
 			armMotor.set(speed);
