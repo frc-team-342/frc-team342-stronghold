@@ -3,8 +3,8 @@ package org.usfirst.frc.team342.robot.subsystems;
 import org.usfirst.frc.team342.robot.commands.camera.SeeWithCamera;
 
 import com.ni.vision.NIVision;
-import com.ni.vision.NIVision.Image;
 import com.ni.vision.VisionException;
+import com.ni.vision.NIVision.Image;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -76,7 +76,8 @@ public class CameraVisionRedux extends Subsystem {
 
 		try {
 			frontCam = NIVision.IMAQdxOpenCamera(CAMERA_1, NIVision.IMAQdxCameraControlMode.CameraControlModeListener);
-		} catch (Exception e) {
+			System.out.println("Cam0 ID: " + frontCam);
+		} catch (VisionException e) {
 			// Print error and disable both cameras
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -87,6 +88,7 @@ public class CameraVisionRedux extends Subsystem {
 
 		try {
 			backCam = NIVision.IMAQdxOpenCamera(CAMERA_2, NIVision.IMAQdxCameraControlMode.CameraControlModeListener);
+			System.out.println("Cam1 ID: " + backCam);
 
 			// If the first cam fails then set it equal to back cam and only use
 			// the back camera.
@@ -94,7 +96,7 @@ public class CameraVisionRedux extends Subsystem {
 				frontCam = backCam;
 				failure = false;
 			}
-		} catch (Exception e) {
+		} catch (VisionException e) {
 			// Print error and disable both cameras
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -111,6 +113,7 @@ public class CameraVisionRedux extends Subsystem {
 		}
 
 		camServer.setQuality(CAMERA_QUALITY);
+		camServer.setSize(2);
 	}
 
 	public static CameraVisionRedux getInstance() {
@@ -119,7 +122,9 @@ public class CameraVisionRedux extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new SeeWithCamera());
+		SeeWithCamera defaultCom = new SeeWithCamera();
+		defaultCom.setRunWhenDisabled(true);
+		setDefaultCommand(defaultCom);
 	}
 
 	public void grabImage() {
@@ -134,32 +139,25 @@ public class CameraVisionRedux extends Subsystem {
 	 * current camera id then restarting on a new camera.
 	 */
 	public void ChangeCamera() {
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("Change Camera Got To Change Camera");
 		if (failure == false) {
 			NIVision.IMAQdxStopAcquisition(curCam);
 			NIVision.IMAQdxUnconfigureAcquisition(curCam);
-			System.out.println("Switching Camera ID From" + curCam);
-			FRCNetworkCommunicationsLibrary.HALSetErrorData("Change Camera Test");
-			// Swap cameras using ternary operator.
-			// curCam = (curCam == frontCam) ? backCam : frontCam;
-			try {
-				if (curCam == frontCam) {
+			System.out.println("Switching Camera ID From " + curCam);
 
-					curCam = backCam;
-				} else {
-					curCam = frontCam;
-				}
-			} catch (VisionException error) {
-				failure = true;
-				FRCNetworkCommunicationsLibrary.HALSetErrorData("" + error);
+			if (curCam == frontCam) {
+				curCam = backCam;
+			} else {
+				curCam = frontCam;
 			}
-			System.out.println("New Camera ID" + curCam);
+
+			System.out.println("New Camera ID " + curCam);
 			try {
 				NIVision.IMAQdxConfigureGrab(curCam);
 				NIVision.IMAQdxStartAcquisition(curCam);
-			} catch (Exception e) {
+			} catch (VisionException e) {
+				e.printStackTrace();
+				FRCNetworkCommunicationsLibrary.HALSetErrorData("Failed changing cameras.");
 				failure = true;
-				System.out.println("INoWork,5 yin ");
 			}
 		}
 	}

@@ -36,7 +36,6 @@ public class DriveWithJoystick extends Command {
 		double left = joystick.getRawAxis(LEFT_STICK);
 		double right = joystick.getRawAxis(RIGHT_STICK);
 
-		// Detect the deadzone.
 		drive.tankDrive(left, right);
 	}
 

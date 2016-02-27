@@ -84,7 +84,14 @@ public class BoulderController extends Subsystem {
 	public double getCollectorCurrent() {
 		return collectorMotor.getOutputCurrent();
 	}
-
+	
+	public double getShooterCurrent(){
+		return shooterMotor.getOutputCurrent();
+	}
+	public double getArmCurrent(){
+		return armMotor.getOutputCurrent();
+	}
+	
 	public void stopShooter() {
 		shooterMotor.set(0);
 	}

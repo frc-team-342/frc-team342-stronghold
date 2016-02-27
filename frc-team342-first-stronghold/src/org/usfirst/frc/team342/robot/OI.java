@@ -1,5 +1,6 @@
 package org.usfirst.frc.team342.robot;
 
+import org.usfirst.frc.team342.robot.commandgroups.DebugInfo;
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
 import org.usfirst.frc.team342.robot.commands.drive.DriveChange_Reverse;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
@@ -14,14 +15,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
-/** This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the
- * robot. */
+/**
+ * This class is the glue that binds the controls on the physical operator
+ * interface to the commands and command groups that allow control of the robot.
+ */
 public class OI {
-	/** This is a somewhat awkward class. It is a wrapper for passing
-	 * commands to the scheduler using Triggers, so it's code should only be
-	 * one once or else the scheduler would have two copies of the
-	 * buttons. */
+	/**
+	 * This is a somewhat awkward class. It is a wrapper for passing commands to
+	 * the scheduler using Triggers, so it's code should only be one once or
+	 * else the scheduler would have two copies of the buttons.
+	 */
 	private static final OI instance = new OI();
 
 	/** Create joystick from port 0 and 1. */
@@ -43,6 +46,9 @@ public class OI {
 
 	private static final int START_BUTTON = 10;
 	private static final int BACK_BUTTON = 9;
+
+	private static final int RIGHT_STICK_BUTTON = 12;
+	// private static final int LEFT_STICK_BUTTON = 11;
 
 	// private static final int NO_BUTTON = 100;
 
@@ -70,6 +76,9 @@ public class OI {
 		// Shooter
 		mapCommand(RIGHT_TRIGGER, new ShootHighPower(), true, alternate);
 		mapCommand(RIGHT_BUMPER, new ShootLowPower(), true, alternate);
+
+		// Debug
+		mapCommand(RIGHT_STICK_BUTTON, new DebugInfo(), true, drive);
 	}
 
 	/** Makes sure the instance has been created. */
@@ -79,14 +88,15 @@ public class OI {
 		instance.toString();
 	}
 
-	/** Simplifies mapping commands to buttons.
+	/**
+	 * Simplifies mapping commands to buttons.
 	 * 
 	 * @param buttonNumber
 	 *            The number of the button on the gamepad
 	 * @param command
-	 *            The command to be run when the button is pressed. */
-	private void mapCommand(int buttonNumber, Command command,
-			boolean stopWhenReleased, Joystick joypad) {
+	 *            The command to be run when the button is pressed.
+	 */
+	private void mapCommand(int buttonNumber, Command command, boolean stopWhenReleased, Joystick joypad) {
 
 		JoystickButton button = new JoystickButton(joypad, buttonNumber);
 		if (stopWhenReleased) {

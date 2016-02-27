@@ -39,11 +39,11 @@ public class DriveSystem extends Subsystem {
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
-				backRightWheel);
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
 
 		navx = new AHRS(SerialPort.Port.kMXP);
+		navx.startLiveWindowMode();
 
 		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
 		driveReversed = false;
@@ -78,6 +78,22 @@ public class DriveSystem extends Subsystem {
 
 	public void resetGyro() {
 		navx.reset();
+	}
+
+	public double getFrontRightCurrent() {
+		return frontRightWheel.getOutputCurrent();
+	}
+
+	public double getFrontLeftCurrent() {
+		return frontLeftWheel.getOutputCurrent();
+	}
+
+	public double getBackRightCurrent() {
+		return backRightWheel.getOutputCurrent();
+	}
+
+	public double getBackLeftCurrent() {
+		return backLeftWheel.getOutputCurrent();
 	}
 
 	public double getGyro() {
