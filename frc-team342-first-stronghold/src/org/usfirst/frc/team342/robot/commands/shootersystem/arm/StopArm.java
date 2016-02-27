@@ -9,7 +9,6 @@ public class StopArm extends Command {
 
 	public StopArm() {
 		arm = BoulderController.getInstance();
-		requires(arm);
 	}
 
 	protected void initialize() {
@@ -24,10 +23,9 @@ public class StopArm extends Command {
 	}
 
 	protected void end() {
-		
 	}
 
 	protected void interrupted() {
-		arm.stopAll();
+		arm.stopArm();
 	}
 }

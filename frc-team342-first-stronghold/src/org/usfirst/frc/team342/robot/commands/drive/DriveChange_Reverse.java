@@ -1,7 +1,6 @@
-package org.usfirst.frc.team342.robot.commands;
+package org.usfirst.frc.team342.robot.commands.drive;
 
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
-import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

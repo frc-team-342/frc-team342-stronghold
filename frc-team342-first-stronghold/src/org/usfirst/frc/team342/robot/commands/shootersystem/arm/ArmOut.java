@@ -8,11 +8,17 @@ public class ArmOut extends Command {
 	private static final double SPEED = -0.8;
 	private BoulderController arm;
 
+	private boolean stopAtLimit;
+
 	private boolean armAtLimit;
 
 	/** Move the arm away from the robot. */
-	public ArmOut() {
+	public ArmOut(boolean stopWhenAtLimit) {
 		arm = BoulderController.getInstance();
+
+		stopAtLimit = stopWhenAtLimit;
+
+		armAtLimit = false;
 	}
 
 	protected void initialize() {
@@ -20,12 +26,17 @@ public class ArmOut extends Command {
 	}
 
 	protected void execute() {
-		// 
 		armAtLimit = arm.setArmSpeed(SPEED);
 	}
 
+	// TODO Make armIn and ArmOut extend a common class to prevent
+	// re-writing code.
 	protected boolean isFinished() {
-		return armAtLimit;
+		if (stopAtLimit) {
+			return armAtLimit;
+		} else {
+			return false;
+		}
 	}
 
 	protected void end() {

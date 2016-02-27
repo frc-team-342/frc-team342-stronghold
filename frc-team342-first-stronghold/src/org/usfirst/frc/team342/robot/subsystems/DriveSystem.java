@@ -1,18 +1,14 @@
 package org.usfirst.frc.team342.robot.subsystems;
 
 import org.usfirst.frc.team342.robot.RobotMap;
-import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.ni.vision.NIVision.Point;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
@@ -26,7 +22,6 @@ public class DriveSystem extends Subsystem {
 
 	/** Drive system to control the wheels. */
 	private final RobotDrive drive;
-
 
 	/** Navx device from kauilabs. */
 	private final AHRS navx;
@@ -44,8 +39,8 @@ public class DriveSystem extends Subsystem {
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
-
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
+				backRightWheel);
 		drive.setSafetyEnabled(false);
 
 		navx = new AHRS(SerialPort.Port.kMXP);

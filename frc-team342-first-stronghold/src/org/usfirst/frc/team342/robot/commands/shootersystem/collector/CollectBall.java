@@ -2,7 +2,6 @@ package org.usfirst.frc.team342.robot.commands.shootersystem.collector;
 
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class CollectBall extends Command {

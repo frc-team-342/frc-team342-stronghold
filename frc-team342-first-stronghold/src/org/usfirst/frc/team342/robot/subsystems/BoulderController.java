@@ -4,7 +4,6 @@ import org.usfirst.frc.team342.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class BoulderController extends Subsystem {
@@ -58,11 +57,6 @@ public class BoulderController extends Subsystem {
 	public boolean setArmSpeed(double speed) {
 		boolean isAtLimit = false;
 		double curVal = potentiometer.getVoltage();
-
-		// Take out start
-
-		// curVal = ARM_IN_ENCODER + 1;
-		// Take out end
 
 		if ((curVal < ARM_IN_ENCODER || speed > 0) && (curVal > ARM_OUT_ENCODER || speed < 0)) {
 			armMotor.set(speed);
