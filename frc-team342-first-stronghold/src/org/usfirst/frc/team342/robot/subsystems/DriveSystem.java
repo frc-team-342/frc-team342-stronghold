@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveSystem extends Subsystem {
 	private static final DriveSystem instance = new DriveSystem();
@@ -39,7 +38,8 @@ public class DriveSystem extends Subsystem {
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
+				backRightWheel);
 		drive.setSafetyEnabled(false);
 
 		navx = new AHRS(SerialPort.Port.kMXP);
@@ -54,9 +54,6 @@ public class DriveSystem extends Subsystem {
 	}
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
-		// TODO Move the gryo data somewhere else
-		SmartDashboard.putData("Gyro", navx);
-
 		if (driveReversed) {
 			drive.tankDrive(leftSpeed * -1, rightSpeed * -1);
 		} else {

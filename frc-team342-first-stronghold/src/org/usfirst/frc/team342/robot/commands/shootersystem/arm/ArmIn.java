@@ -1,57 +1,15 @@
 package org.usfirst.frc.team342.robot.commands.shootersystem.arm;
 
-import org.usfirst.frc.team342.robot.subsystems.BoulderController;
-
-import edu.wpi.first.wpilibj.command.Command;
-
-public class ArmIn extends Command {
+public class ArmIn extends ArmMovement {
 	private static final double SPEED = -0.8;
 
-	private BoulderController arm;
-
-	/** Determines whether or not the command should stop running when a
-	 * limit switch is hit. Used for changing functionality between
-	 * autonomous and teleop. */
-	private boolean stopAtLimit;
-
-	private boolean isAtLimit;
-
-	/** Moves the arm back into the robot. */
-	// TODO Use java doc link.
-	// TODO Rename variable
+	/** Moves the arm back into the robot.
+	 * 
+	 * @param stopWhenAtLimit
+	 *            True if the command should end when the limit of he motion
+	 *            is reached. */
 	public ArmIn(boolean stopWhenAtLimit) {
-		arm = BoulderController.getInstance();
-
-		stopAtLimit = stopWhenAtLimit;
-
-		isAtLimit = false;
+		super(SPEED, stopWhenAtLimit);
 	}
 
-	protected void initialize() {
-		isAtLimit = false;
-	}
-
-	protected void execute() {
-		isAtLimit = arm.setArmSpeed(SPEED);
-	}
-
-	/** Depending on the mode the command was created in, either never finish
-	 * such as in teleop, where the command would just be restarted again
-	 * anyway, or finish when the arm is at it's limit which we use in
-	 * autonomous to determine when we can start driving. */
-	protected boolean isFinished() {
-		if (stopAtLimit) {
-			return isAtLimit;
-		} else {
-			return false;
-		}
-	}
-
-	protected void end() {
-		arm.stopArm();
-	}
-
-	protected void interrupted() {
-		arm.stopArm();
-	}
 }

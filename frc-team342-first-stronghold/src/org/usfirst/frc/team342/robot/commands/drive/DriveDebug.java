@@ -6,41 +6,49 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class DriveDebug extends Command {
-	
+
 	DriveSystem drive;
 
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
 		drive = DriveSystem.getInstance();
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub
-		
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\nDrive Back Left" + drive.getBackLeftCurrent());
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\nDrive Back Right" + drive.getBackRightCurrent());
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\nDrive Front Left" + drive.getFrontLeftCurrent());
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\nDrive Front Right" + drive.getFrontRightCurrent());
+		String backLeftWheel = "Drive Back Left " + drive.getBackLeftCurrent()
+				+ "/n";
+		String backRightWheel = ("Drive Back Right"
+				+ drive.getBackRightCurrent() + "/n");
+		String frontLeftWheel = "Drive Front Left" + drive.getFrontLeftCurrent()
+				+ "/n";
+		String frontRightWheel = "Drive Front Right"
+				+ drive.getFrontRightCurrent() + "/n";
+
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(backLeftWheel);
+		System.out.println(backLeftWheel);
+
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(backRightWheel);
+		System.out.println(backRightWheel);
+
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(frontLeftWheel);
+		System.out.println(frontLeftWheel);
+
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(frontRightWheel);
+		System.out.println(frontRightWheel);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -6,39 +6,37 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class ArmDebug extends Command {
-	
+
 	BoulderController boulderCont;
-	
+
 	@Override
 	protected void initialize() {
-		// TODO Auto-generated method stub
 		boulderCont = BoulderController.getInstance();
 	}
 
 	@Override
 	protected void execute() {
-		// TODO Auto-generated method stub	
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\nArm Current" + boulderCont.getArmCurrent());
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("\n Potientiometer" + boulderCont.getPotentiometer());
+		String arm = "Arm Current" + boulderCont.getArmCurrent() + "\n";
+		String pot = "Potientiometer" + boulderCont.getPotentiometer() + "\n";
 
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(arm);
+		System.out.println(arm);
+
+		FRCNetworkCommunicationsLibrary.HALSetErrorData(pot);
+		System.out.println(pot);
 	}
 
 	@Override
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	protected void end() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
