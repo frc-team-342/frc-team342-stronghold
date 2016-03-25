@@ -6,29 +6,35 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class ArmDebug extends Command {
+	private BoulderController boulderCont;
 
-	BoulderController boulderCont;
+	private double prevTime;
 
 	@Override
 	protected void initialize() {
 		boulderCont = BoulderController.getInstance();
+
+		prevTime = timeSinceInitialized();
 	}
 
 	@Override
 	protected void execute() {
-		String arm = "Arm Current" + boulderCont.getArmCurrent() + "\n";
-		String pot = "Potientiometer" + boulderCont.getPotentiometer() + "\n";
+		// Only update at most 5 times a second
+		if (timeSinceInitialized() > prevTime + 0.1) {
+			String arm = "Arm Current " + boulderCont.getArmCurrent() + "\n";
+			String armEncoder = "Arm encoder " + boulderCont.getArmEncoder() + "\n";
 
-		FRCNetworkCommunicationsLibrary.HALSetErrorData(arm);
-		System.out.println(arm);
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(arm);
+			System.out.print(arm);
 
-		FRCNetworkCommunicationsLibrary.HALSetErrorData(pot);
-		System.out.println(pot);
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(armEncoder);
+			System.out.print(armEncoder);
+		}
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	@Override

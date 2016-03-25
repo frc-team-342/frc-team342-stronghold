@@ -24,11 +24,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	private static final String INITIALIZED_MESSAGE = "Burnie is alive!!!\n";
 
-	private static final String AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE = "ERROR: You're mom bruh\n";
-	private static final String AUTONOMOUS_LOW_BAR_MESSAGE = "LOWWWW BARRRR\n";
+	private static final String AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE = "Drive straight autonomous mode activated.\n";
+	private static final String AUTONOMOUS_LOW_BAR_MESSAGE = "Autoing under low bar.\n";
+	private static final String AUTONOMOUS_UNUSED_MESSAGE = "No autonomous mode used.\n";
 
-	private static final String AUTONOMOUS_UNUSED_MESSAGE = "WHY YOU NO AUTO, CHUM-BUCKET?!?\n";
-	private static final String TELEOP_MESSAGE = "Teleop Initialized\n";
+	private static final String TELEOP_MESSAGE = "Teleop Initialized.\n";
 
 	private static final String AUTONOMOUS_ENABLED = "Autonomous Enabled?";
 	private static final String AUTONMOUS_DRIVE_UNDER_LOWBAR = "Autonomous Low-Bar Enabled?";

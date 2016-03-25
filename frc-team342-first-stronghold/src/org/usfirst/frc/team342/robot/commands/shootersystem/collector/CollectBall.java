@@ -7,10 +7,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class CollectBall extends Command {
 	// Collector
 	private static final double TIMER_DELAY = 0.5;
-	private static final double COLLECT_SPEED = 0.75;
+	private static final double COLLECT_SPEED = 0.8;
 
 	// Current value to detect ball
-	private static final double BALL_CURRENT = 1.0;
+	private static final double BALL_CURRENT = 1.55;
 
 	private BoulderController shooter;
 
@@ -24,7 +24,6 @@ public class CollectBall extends Command {
 		shooter = BoulderController.getInstance();
 		requires(shooter);
 
-	
 	}
 
 	@Override

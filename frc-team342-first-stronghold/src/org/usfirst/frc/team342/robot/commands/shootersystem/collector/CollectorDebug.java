@@ -6,26 +6,31 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class CollectorDebug extends Command {
+	private BoulderController boulderCont;
 
-	BoulderController boulderCont;
+	private double prevTime;
 
 	@Override
 	protected void initialize() {
 		boulderCont = BoulderController.getInstance();
+
+		prevTime = timeSinceInitialized();
 	}
 
 	@Override
 	protected void execute() {
-		String collector = "Collector Current"
-				+ boulderCont.getCollectorCurrent() + "/n";
+		// Only update at most 5 times a second
+		if (timeSinceInitialized() > prevTime + 0.1) {
+			String collector = "Collector Current " + boulderCont.getCollectorCurrent() + "\n";
 
-		FRCNetworkCommunicationsLibrary.HALSetErrorData(collector);
-		System.out.println(collector);
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(collector);
+			System.out.print(collector);
+		}
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return true;
+		return false;
 	}
 
 	@Override

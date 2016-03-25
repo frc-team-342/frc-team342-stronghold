@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveSystem extends Subsystem {
+	/** Smooths stopping quickly */
+	private static final double VOLTAGE_RAMP = 200;
+	private static final double DRIVE_SCALE = 0.8;
+
 	private static final DriveSystem instance = new DriveSystem();
 
 	/** Drive wheels. */
@@ -35,11 +39,16 @@ public class DriveSystem extends Subsystem {
 		backRightWheel = new CANTalon(RobotMap.BACK_RIGHT_WHEEL_CAN_TALON);
 		backLeftWheel = new CANTalon(RobotMap.BACK_LEFT_WHEEL_CAN_TALON);
 
+		// Ramping to make stopping smoother
+		frontLeftWheel.setVoltageRampRate(VOLTAGE_RAMP);
+		backLeftWheel.setVoltageRampRate(VOLTAGE_RAMP);
+		frontRightWheel.setVoltageRampRate(VOLTAGE_RAMP);
+		backRightWheel.setVoltageRampRate(VOLTAGE_RAMP);
+
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
-		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel,
-				backRightWheel);
+		drive = new RobotDrive(frontLeftWheel, backLeftWheel, frontRightWheel, backRightWheel);
 		drive.setSafetyEnabled(false);
 
 		navx = new AHRS(SerialPort.Port.kMXP);
@@ -55,9 +64,11 @@ public class DriveSystem extends Subsystem {
 
 	public void tankDrive(double leftSpeed, double rightSpeed) {
 		if (driveReversed) {
-			drive.tankDrive(leftSpeed * -1, rightSpeed * -1);
+			// Swaps left and right on purpose. Raise your right hand in a
+			// mirror and you will see why.
+			drive.tankDrive(rightSpeed * -1 * DRIVE_SCALE, leftSpeed * -1 * DRIVE_SCALE);
 		} else {
-			drive.tankDrive(leftSpeed, rightSpeed);
+			drive.tankDrive(leftSpeed * DRIVE_SCALE, rightSpeed * DRIVE_SCALE);
 		}
 	}
 
@@ -77,6 +88,14 @@ public class DriveSystem extends Subsystem {
 		navx.reset();
 	}
 
+	public double getGyro() {
+		return navx.getAngle();
+	}
+
+	public double getZ() {
+		return navx.getRoll();
+	}
+
 	public double getFrontRightCurrent() {
 		return frontRightWheel.getOutputCurrent();
 	}
@@ -93,10 +112,6 @@ public class DriveSystem extends Subsystem {
 		return backLeftWheel.getOutputCurrent();
 	}
 
-	public double getGyro() {
-		return navx.getAngle();
-	}
-
 	public double getUltrasonic() {
 		return ultrasonic.getVoltage();
 	}
@@ -109,5 +124,4 @@ public class DriveSystem extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 	}
-
 }

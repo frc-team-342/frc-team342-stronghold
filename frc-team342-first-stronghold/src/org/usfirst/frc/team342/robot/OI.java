@@ -3,8 +3,9 @@ package org.usfirst.frc.team342.robot;
 import org.usfirst.frc.team342.robot.commandgroups.DebugInfo;
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
 import org.usfirst.frc.team342.robot.commands.drive.DriveChange_Reverse;
-import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmIn;
-import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmOut;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.MoveBackward;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
 import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectBall;
 import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectorOut;
 import org.usfirst.frc.team342.robot.commands.shootersystem.collector.StopCollector;
@@ -29,15 +30,20 @@ public class OI {
 
 	/** Create joystick from port 0 and 1. */
 	// TODO Document our controller here
-	private final Joystick drive;
-	private final Joystick alternate;
+	private final Joystick driveLeft;
+	private final Joystick driveRight;
+
+	private final Joystick joypad;
 
 	// Map Joypad Buttons
 	// TODO Finish Mapping Buttons
+	// private static final int JOYSTICK_TRIGGER = 1;
+	private static final int JOYSTICK_SWITCH_CAM = 2;
+
 	private static final int X_BUTTON = 1;
 	private static final int A_BUTTON = 2;
 	private static final int B_BUTTON = 3;
-	// private static final int Y_BUTTON = 4;
+	private static final int Y_BUTTON = 4;
 
 	private static final int LEFT_BUMPER = 5;
 	private static final int RIGHT_BUMPER = 6;
@@ -47,38 +53,39 @@ public class OI {
 	private static final int START_BUTTON = 10;
 	private static final int BACK_BUTTON = 9;
 
+	private static final int LEFT_STICK_BUTTON = 11;
 	private static final int RIGHT_STICK_BUTTON = 12;
-	// private static final int LEFT_STICK_BUTTON = 11;
-
-	// private static final int NO_BUTTON = 100;
 
 	private OI() {
-		drive = new Joystick(0);
-		alternate = new Joystick(1);
-
-		// TODO Decide which buttons to map to what commands
+		driveLeft = new Joystick(0);
+		driveRight = new Joystick(1);
+		joypad = new Joystick(2);
 
 		// Camera
-		mapCommand(START_BUTTON, new ChangeCamera(), false, drive);
+		mapCommand(START_BUTTON, new ChangeCamera(), false, joypad);
 
 		// Drive
-		mapCommand(BACK_BUTTON, new DriveChange_Reverse(), false, drive);
+		mapCommand(JOYSTICK_SWITCH_CAM, new DriveChange_Reverse(), false, driveLeft);
+		mapCommand(JOYSTICK_SWITCH_CAM, new DriveChange_Reverse(), false, driveRight);
+		mapCommand(BACK_BUTTON, new DriveChange_Reverse(), false, joypad);
 
 		// Arm
-		mapCommand(LEFT_TRIGGER, new ArmIn(false), true, alternate);
-		mapCommand(LEFT_BUMPER, new ArmOut(false), true, alternate);
+		mapCommand(LEFT_TRIGGER, new ArmMovement(0, true), true, joypad);
+		mapCommand(LEFT_BUMPER, new ArmMovement(1, true), true, joypad);
+		mapCommand(LEFT_STICK_BUTTON, new MoveBackward(), true, joypad);
+		mapCommand(Y_BUTTON, new StopArm(false), true, joypad);
 
 		// Collector
-		mapCommand(X_BUTTON, new CollectorOut(), true, alternate);
-		mapCommand(A_BUTTON, new CollectBall(), false, alternate);
-		mapCommand(B_BUTTON, new StopCollector(), false, alternate);
+		mapCommand(X_BUTTON, new CollectorOut(), true, joypad);
+		mapCommand(A_BUTTON, new CollectBall(), false, joypad);
+		mapCommand(B_BUTTON, new StopCollector(), false, joypad);
 
 		// Shooter
-		mapCommand(RIGHT_TRIGGER, new ShootHighPower(), true, alternate);
-		mapCommand(RIGHT_BUMPER, new ShootLowPower(), true, alternate);
+		mapCommand(RIGHT_TRIGGER, new ShootHighPower(), true, joypad);
+		mapCommand(RIGHT_BUMPER, new ShootLowPower(), true, joypad);
 
 		// Debug
-		mapCommand(RIGHT_STICK_BUTTON, new DebugInfo(), true, drive);
+		mapCommand(RIGHT_STICK_BUTTON, new DebugInfo(), true, joypad);
 	}
 
 	/** Makes sure the instance has been created. */
@@ -92,12 +99,11 @@ public class OI {
 	 * Simplifies mapping commands to buttons.
 	 * 
 	 * @param buttonNumber
-	 *            The number of the button on the gamepad
+	 *            The number of the button on the gamepad.
 	 * @param command
 	 *            The command to be run when the button is pressed.
 	 */
-	private void mapCommand(int buttonNumber, Command command, boolean stopWhenReleased, Joystick joypad) {
-
+	private static void mapCommand(int buttonNumber, Command command, boolean stopWhenReleased, Joystick joypad) {
 		JoystickButton button = new JoystickButton(joypad, buttonNumber);
 		if (stopWhenReleased) {
 			button.whileHeld(command);
@@ -105,5 +111,4 @@ public class OI {
 			button.whenPressed(command);
 		}
 	}
-
 }

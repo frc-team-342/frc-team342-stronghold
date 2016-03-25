@@ -14,7 +14,7 @@ public class DriveStraight extends Command {
 	 * but may cause over-steering.
 	 */
 	private static final double KP = 0.7;
-	private static final double SPEED = 1.0;
+	private static final double SPEED = 0.5;
 
 	private DriveSystem drive;
 

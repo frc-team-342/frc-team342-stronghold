@@ -3,8 +3,11 @@ package org.usfirst.frc.team342.robot.subsystems;
 import org.usfirst.frc.team342.robot.commands.camera.SeeWithCamera;
 
 import com.ni.vision.NIVision;
-import com.ni.vision.VisionException;
+import com.ni.vision.NIVision.DrawMode;
 import com.ni.vision.NIVision.Image;
+import com.ni.vision.NIVision.Rect;
+import com.ni.vision.NIVision.ShapeMode;
+import com.ni.vision.VisionException;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -41,14 +44,14 @@ d __ ___.-''-. _____b
 public class CameraVisionRedux extends Subsystem {
 	// There is a problem with camera names changing. If a change is
 	// suspected, find the correct name using the roborio web interface.
-	private static final String CAMERA_1 = "cam0";
-	private static final String CAMERA_2 = "cam1";
+	private static final String CAMERA_1 = "cam1";
+	// private static final String CAMERA_2 = "cam0";
 
 	/*
 	 * The quality of the compressed image sent to the smartDashboard. Used by
 	 * the camera servers setQuality() method.
 	 */
-	private static final int CAMERA_QUALITY = 80;
+	private static final int CAMERA_QUALITY = 70;
 
 	private static final CameraVisionRedux INSTANCE = new CameraVisionRedux();
 
@@ -86,24 +89,26 @@ public class CameraVisionRedux extends Subsystem {
 			failure = true;
 		}
 
-		try {
-			backCam = NIVision.IMAQdxOpenCamera(CAMERA_2, NIVision.IMAQdxCameraControlMode.CameraControlModeListener);
-			System.out.println("Cam1 ID: " + backCam);
-
-			// If the first cam fails then set it equal to back cam and only use
-			// the back camera.
-			if (failure == true) {
-				frontCam = backCam;
-				failure = false;
-			}
-		} catch (VisionException e) {
-			// Print error and disable both cameras
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			System.out.println("Second camera failed");
-			FRCNetworkCommunicationsLibrary.HALSetErrorData("Second Camera Failed");
-			failure = true;
-		}
+		// try {
+		// backCam = NIVision.IMAQdxOpenCamera(CAMERA_2,
+		// NIVision.IMAQdxCameraControlMode.CameraControlModeListener);
+		// System.out.println("Cam1 ID: " + backCam);
+		//
+		// // If the first cam fails then set it equal to back cam and only use
+		// // the back camera.
+		// if (failure == true) {
+		// frontCam = backCam;
+		// failure = false;
+		// }
+		// } catch (VisionException e) {
+		// // Print error and disable both cameras
+		// e.printStackTrace();
+		// System.out.println(e.getMessage());
+		// System.out.println("Second camera failed");
+		// FRCNetworkCommunicationsLibrary.HALSetErrorData("Second Camera
+		// Failed");
+		// failure = true;
+		// }
 
 		// Default camera is Front Camera
 		curCam = frontCam;
@@ -130,6 +135,14 @@ public class CameraVisionRedux extends Subsystem {
 	public void grabImage() {
 		if (!failure) {
 			NIVision.IMAQdxGrab(curCam, frame, 0);
+
+			// NIVision.imaqDrawLineOnImage(frame, frame, DrawMode.DRAW_INVERT,
+			// new NIVision.Point(0, 50),
+			// new NIVision.Point(100, 50), (float) 0x0);
+
+			NIVision.imaqDrawShapeOnImage(frame, frame, new Rect(0, 0, 100, 100), DrawMode.PAINT_INVERT,
+					ShapeMode.SHAPE_RECT, 0x000000);
+
 			camServer.setImage(frame);
 		}
 	}
@@ -145,7 +158,7 @@ public class CameraVisionRedux extends Subsystem {
 			System.out.println("Switching Camera ID From " + curCam);
 
 			if (curCam == frontCam) {
-				curCam = backCam;
+				// curCam = backCam;
 			} else {
 				curCam = frontCam;
 			}
