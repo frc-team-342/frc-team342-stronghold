@@ -12,7 +12,7 @@ public class DriveStraight extends Command {
 	private static final double KP = 0.7;
 	private static final double SPEED = 0.8;
 
-	private static final double PEAK_VALUE = -7.0;
+	private static final double PEAK_VALUE = 7.0;
 	private static final double LEVEL_ZONE = 1.5;
 
 	private DriveSystem drive;
@@ -75,11 +75,9 @@ public class DriveStraight extends Command {
 
 		if (!pastPeak) {
 			pastPeak = average - PEAK_VALUE > initialAverage;
-			System.out.println("Past Peak");
 		} else if (pastPeak) {
 			pastDefense = average < Math.abs(initialAverage - LEVEL_ZONE);
 
-			System.out.println("Defense passed");
 		}
 	}
 

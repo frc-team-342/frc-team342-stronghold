@@ -6,18 +6,19 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveSlow extends Command {
 	private static final double SPEED = 0.4;
-	private static final double TIME = 2;
+	private static final double DELAY = 2.0;
 
 	private DriveSystem drive;
 
-	public DriveSlow() {
-		super(TIME);
+	private double startTime;
 
+	public DriveSlow() {
 		drive = DriveSystem.getInstance();
 	}
 
 	@Override
 	protected void initialize() {
+		startTime = timeSinceInitialized();
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class DriveSlow extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return timeSinceInitialized() > startTime + DELAY;
 	}
 
 	@Override
