@@ -1,7 +1,8 @@
 
 package org.usfirst.frc.team342.robot;
 
-import org.usfirst.frc.team342.robot.commands.drive.DriveStraight;
+import org.usfirst.frc.team342.robot.commands.drive.AutonomousDrive;
+import org.usfirst.frc.team342.robot.commands.drive.ChevalDeFriseAuto;
 import org.usfirst.frc.team342.robot.commands.drive.DriveUnderLowBar;
 import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
@@ -32,6 +33,7 @@ public class Robot extends IterativeRobot {
 
 	private static final String AUTONOMOUS_ENABLED = "Autonomous Enabled?";
 	private static final String AUTONMOUS_DRIVE_UNDER_LOWBAR = "Autonomous Low-Bar Enabled?";
+	private static final String AUTONOMOUS_DRIVE_OVER_CHEVAL = "Autonomous Cheval de frise?";
 
 	private DriveWithJoystick joydrive;
 
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot {
 		FRCNetworkCommunicationsLibrary.HALSetErrorData(INITIALIZED_MESSAGE);
 		SmartDashboard.putBoolean(AUTONOMOUS_ENABLED, true);
 		SmartDashboard.putBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR, false);
+		SmartDashboard.putBoolean(AUTONOMOUS_DRIVE_OVER_CHEVAL, false);
 	}
 
 	/**
@@ -66,16 +69,19 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		if (SmartDashboard.getBoolean(AUTONOMOUS_ENABLED)) {
 			if (SmartDashboard.getBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR)) {
-				(new DriveUnderLowBar()).start();
+				new DriveUnderLowBar().start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUS_LOW_BAR_MESSAGE);
+			} else if (SmartDashboard.getBoolean(AUTONOMOUS_DRIVE_OVER_CHEVAL)) {
+				new ChevalDeFriseAuto().start();
 			} else {
-				(new DriveStraight()).start();
+				new AutonomousDrive().start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE);
 			}
 		} else {
 			// DO NOTHING
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUS_UNUSED_MESSAGE);
 		}
+
 	}
 
 	/** This function is called periodically during autonomous */

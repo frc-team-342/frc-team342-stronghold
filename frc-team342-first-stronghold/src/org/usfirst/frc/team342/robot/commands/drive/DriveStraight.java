@@ -6,17 +6,23 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveStraight extends Command {
 	/**
-	 * Time (in seconds) the robot should drive straight during autonomous.
-	 */
-	private static final double RUN_TIME = 9;
-	/**
 	 * Proportional correction constant. Higher values give faster correction,
 	 * but may cause over-steering.
 	 */
 	private static final double KP = 0.7;
-	private static final double SPEED = 0.5;
+	private static final double SPEED = 0.8;
+
+	private static final double PEAK_VALUE = -7.0;
+	private static final double LEVEL_ZONE = 1.5;
 
 	private DriveSystem drive;
+
+	private int listCounter;
+	private double[] gyroValues;
+	private double initialAverage;
+
+	private boolean pastPeak;
+	private boolean pastDefense;
 
 	/**
 	 * Drive with correction, useful for rough terrain. As long as the robot
@@ -29,24 +35,58 @@ public class DriveStraight extends Command {
 	public DriveStraight() {
 		drive = DriveSystem.getInstance();
 		requires(drive);
+
+		gyroValues = new double[20];
 	}
 
 	@Override
 	protected void initialize() {
 		// The gyro must be initialized to zero for correction to work.
 		drive.resetGyro();
+
+		gyroValues = new double[20];
+
+		initialAverage = 0;
+		for (int i = 0; i < 20; i++) {
+			gyroValues[i] = drive.getHeight();
+			initialAverage += gyroValues[i];
+		}
+		initialAverage /= 20;
+
+		listCounter = 0;
+
+		pastPeak = false;
+		pastDefense = false;
 	}
 
 	@Override
 	protected void execute() {
 		double angle = drive.getGyro(); // get current heading
 		drive.drive(SPEED, -angle * KP); // drive towards heading 0
+
+		gyroValues[listCounter++] = drive.getHeight();
+		listCounter %= 20;
+
+		double average = 0;
+		for (double val : gyroValues) {
+			average += val;
+		}
+		average /= 20;
+
+		if (!pastPeak) {
+			pastPeak = average - PEAK_VALUE > initialAverage;
+			System.out.println("Past Peak");
+		} else if (pastPeak) {
+			pastDefense = average < Math.abs(initialAverage - LEVEL_ZONE);
+
+			System.out.println("Defense passed");
+		}
 	}
 
 	/** Runs on a timer. */
 	@Override
 	protected boolean isFinished() {
-		return timeSinceInitialized() >= RUN_TIME;
+		return pastDefense;
 	}
 
 	@Override

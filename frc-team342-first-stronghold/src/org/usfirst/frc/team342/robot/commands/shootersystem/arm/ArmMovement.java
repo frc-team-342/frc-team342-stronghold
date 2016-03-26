@@ -2,12 +2,31 @@ package org.usfirst.frc.team342.robot.commands.shootersystem.arm;
 
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 
+import com.sun.crypto.provider.ARCFOURCipher;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ArmMovement extends Command {
+	private static final int MINIMUM_STOP_ERROR = 50;
+
 	private BoulderController arm;
 
-	private int position;
+	private boolean waitForArm;
+	private ArmPosition position;
+
+	public enum ArmPosition {
+		FULL_IN(0.0), FULL_DOWN(0.5);
+
+		private double position;
+
+		private ArmPosition(double position) {
+			this.position = position;
+		}
+
+		public double getPosition() {
+			return position;
+		}
+	}
 
 	/**
 	 * Move the arm.
@@ -17,9 +36,10 @@ public class ArmMovement extends Command {
 	 * @param stopAtLimit
 	 *            True for autonomous. False for teleop.
 	 */
-	public ArmMovement(int position, boolean stopAtLimit) {
+	public ArmMovement(ArmPosition position, boolean stopAtLimit) {
 		arm = BoulderController.getInstance();
 
+		waitForArm = stopAtLimit;
 		this.position = position;
 	}
 
@@ -27,7 +47,7 @@ public class ArmMovement extends Command {
 	};
 
 	protected void execute() {
-		arm.moveArm(position);
+		arm.moveArm(position.getPosition());
 	}
 
 	/**
@@ -37,7 +57,7 @@ public class ArmMovement extends Command {
 	 * autonomous to determine when we can start driving.
 	 */
 	protected boolean isFinished() {
-		return true;
+		return arm.getPositionError() < MINIMUM_STOP_ERROR || !waitForArm;
 	}
 
 	protected void end() {

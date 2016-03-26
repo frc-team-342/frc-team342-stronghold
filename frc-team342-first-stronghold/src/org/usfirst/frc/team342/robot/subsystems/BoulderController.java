@@ -15,7 +15,8 @@ public class BoulderController extends Subsystem {
 
 	private static final int ENCODER_CODES_PER_REVOLUTION = 1000;
 
-	private static final double[] ARM_OUT_ENCODER = { 0.0, -0.59, -0.3, 0.5 };
+	// private static final double[] ARM_OUT_ENCODER = { 0.0, -0.59, -0.3, 0.5
+	// };
 
 	/** Controls the launcher for long-range shooting. */
 	private CANTalon shooterMotor;
@@ -73,13 +74,13 @@ public class BoulderController extends Subsystem {
 		 * neutral within this range. See Table in Section 17.2.1 for native
 		 * units per rotation.
 		 */
-		armMotor.setAllowableClosedLoopErr(0); /* always servo */
+		armMotor.setAllowableClosedLoopErr(5);
 		/* set closed loop gains in slot0 */
 		armMotor.setProfile(0);
 		armMotor.setF(0.0);
 		armMotor.setP(0.5);
-		armMotor.setI(0.000);
-		armMotor.setD(0.1);
+		armMotor.setI(0.0);
+		armMotor.setD(0.01);
 
 		armMotor.changeControlMode(TalonControlMode.Position);
 
@@ -117,12 +118,16 @@ public class BoulderController extends Subsystem {
 	/**
 	 * TODO
 	 */
-	public void moveArm(int position) {
+	public void moveArm(double position) {
 		armMotor.enable();
-		armMotor.set(ARM_OUT_ENCODER[position]);
+		armMotor.set(position);
 	}
 
-	/** true is position, false is voltage. */
+	public int getPositionError() {
+		return armMotor.getClosedLoopError();
+	}
+
+	/** true is position, false is percentVbus. */
 	public void setMode(boolean mode) {
 		if (mode) {
 			armMotor.changeControlMode(TalonControlMode.Position);
@@ -181,20 +186,6 @@ public class BoulderController extends Subsystem {
 		armMotor.disable();
 		collectorMotor.set(0);
 	}
-
-	// public boolean nicksFix() {
-	// boolean limit = armLimit.get();
-	// if (limit == false) {
-	// armMotor.set(1.0);
-	// return false;
-	// } else if (limit == true) {
-	// armMotor.set(0.0);
-	// armMotor.setEncPosition(0);
-	// return true;
-	// }
-	//
-	// return false;
-	// }
 
 	@Override
 	protected void initDefaultCommand() {

@@ -30,7 +30,7 @@ public class DriveDebug extends Command {
 			// String frontRightWheel = "Drive Front Right " +
 			// drive.getFrontRightCurrent() + "\n";
 
-			String gyro_z = "Z Gyro " + drive.getZ();
+			String gyro_z = "Z Gyro " + drive.getHeight();
 
 			// FRCNetworkCommunicationsLibrary.HALSetErrorData(backLeftWheel);
 			// System.out.print(backLeftWheel);

@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class DriveSystem extends Subsystem {
 	/** Smooths stopping quickly */
 	private static final double VOLTAGE_RAMP = 200;
-	private static final double DRIVE_SCALE = 0.8;
-
+	private static final double DRIVE_SCALE = 1.0;
+	
 	private static final DriveSystem instance = new DriveSystem();
 
 	/** Drive wheels. */
@@ -92,8 +92,8 @@ public class DriveSystem extends Subsystem {
 		return navx.getAngle();
 	}
 
-	public double getZ() {
-		return navx.getRoll();
+	public double getHeight() {
+		return navx.getPitch();
 	}
 
 	public double getFrontRightCurrent() {

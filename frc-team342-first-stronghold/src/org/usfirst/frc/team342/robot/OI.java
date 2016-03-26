@@ -4,6 +4,7 @@ import org.usfirst.frc.team342.robot.commandgroups.DebugInfo;
 import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
 import org.usfirst.frc.team342.robot.commands.drive.DriveChange_Reverse;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement.ArmPosition;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.MoveBackward;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.StopArm;
 import org.usfirst.frc.team342.robot.commands.shootersystem.collector.CollectBall;
@@ -70,8 +71,8 @@ public class OI {
 		mapCommand(BACK_BUTTON, new DriveChange_Reverse(), false, joypad);
 
 		// Arm
-		mapCommand(LEFT_TRIGGER, new ArmMovement(0, true), true, joypad);
-		mapCommand(LEFT_BUMPER, new ArmMovement(1, true), true, joypad);
+		mapCommand(LEFT_TRIGGER, new ArmMovement(ArmPosition.FULL_IN, true), true, joypad);
+		mapCommand(LEFT_BUMPER, new ArmMovement(ArmPosition.FULL_DOWN, true), true, joypad);
 		mapCommand(LEFT_STICK_BUTTON, new MoveBackward(), true, joypad);
 		mapCommand(Y_BUTTON, new StopArm(false), true, joypad);
 
