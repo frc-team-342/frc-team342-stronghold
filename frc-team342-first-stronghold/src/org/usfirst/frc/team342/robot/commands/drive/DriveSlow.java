@@ -5,7 +5,7 @@ import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveSlow extends Command {
-	private static final double SPEED = 0.4;
+	private static final double SPEED = -0.4;
 	private static final double DELAY = 2.0;
 
 	private DriveSystem drive;

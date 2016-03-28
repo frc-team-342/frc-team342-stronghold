@@ -15,9 +15,6 @@ public class BoulderController extends Subsystem {
 
 	private static final int ENCODER_CODES_PER_REVOLUTION = 1000;
 
-	// private static final double[] ARM_OUT_ENCODER = { 0.0, -0.59, -0.3, 0.5
-	// };
-
 	/** Controls the launcher for long-range shooting. */
 	private CANTalon shooterMotor;
 	/**
@@ -31,7 +28,7 @@ public class BoulderController extends Subsystem {
 	private DigitalInput armLimit;
 
 	private class preventArmBreak extends Trigger {
-		private static final double MAX_CURRENT = 7.0;
+		private static final double MAX_CURRENT = 12.0;
 
 		@Override
 		public boolean get() {
@@ -78,7 +75,7 @@ public class BoulderController extends Subsystem {
 		/* set closed loop gains in slot0 */
 		armMotor.setProfile(0);
 		armMotor.setF(0.0);
-		armMotor.setP(0.5);
+		armMotor.setP(0.7);
 		armMotor.setI(0.0);
 		armMotor.setD(0.01);
 
@@ -104,6 +101,11 @@ public class BoulderController extends Subsystem {
 	/** Get the velocity from the encoder on the shooter motors talon. */
 	public int getShootEncVel() {
 		return shooterMotor.getEncVelocity();
+	}
+
+	public boolean armLimit() {
+		// Limit switch is inverted.
+		return armLimit.get();
 	}
 
 	public double getArmEncoder() {

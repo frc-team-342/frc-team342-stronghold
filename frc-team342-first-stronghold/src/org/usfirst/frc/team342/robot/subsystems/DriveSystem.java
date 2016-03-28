@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveSystem extends Subsystem {
 	/** Smooths stopping quickly */
-	private static final double VOLTAGE_RAMP = 200;
+	private static final double VOLTAGE_RAMP = 0.0;
 	private static final double DRIVE_SCALE = 1.0;
-	
+
 	private static final DriveSystem instance = new DriveSystem();
 
 	/** Drive wheels. */

@@ -140,8 +140,9 @@ public class CameraVisionRedux extends Subsystem {
 			// new NIVision.Point(0, 50),
 			// new NIVision.Point(100, 50), (float) 0x0);
 
-			NIVision.imaqDrawShapeOnImage(frame, frame, new Rect(0, 0, 100, 100), DrawMode.PAINT_INVERT,
-					ShapeMode.SHAPE_RECT, 0x000000);
+			// NIVision.imaqDrawShapeOnImage(frame, frame, new Rect(0, 0, 100,
+			// 100), DrawMode.PAINT_INVERT,
+			// ShapeMode.SHAPE_RECT, 0x000000);
 
 			camServer.setImage(frame);
 		}

@@ -10,10 +10,10 @@ public class DriveStraight extends Command {
 	 * but may cause over-steering.
 	 */
 	private static final double KP = 0.7;
-	private static final double SPEED = 0.8;
+	private static final double SPEED = -0.8;
 
-	private static final double PEAK_VALUE = 7.0;
-	private static final double LEVEL_ZONE = 1.5;
+	private static final double PEAK_VALUE = -12.0;
+	private static final double LEVEL_ZONE = 1.0;
 
 	private DriveSystem drive;
 
@@ -77,11 +77,9 @@ public class DriveStraight extends Command {
 			pastPeak = average - PEAK_VALUE > initialAverage;
 		} else if (pastPeak) {
 			pastDefense = average < Math.abs(initialAverage - LEVEL_ZONE);
-
 		}
 	}
 
-	/** Runs on a timer. */
 	@Override
 	protected boolean isFinished() {
 		return pastDefense;

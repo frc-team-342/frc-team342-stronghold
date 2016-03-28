@@ -23,12 +23,16 @@ public class ArmDebug extends Command {
 		if (timeSinceInitialized() > prevTime + 0.1) {
 			String arm = "Arm Current " + boulderCont.getArmCurrent() + "\n";
 			String armEncoder = "Arm encoder " + boulderCont.getArmEncoder() + "\n";
+			String armPositionError = "Arm Position error " + boulderCont.getPositionError() + "\n";
 
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(arm);
 			System.out.print(arm);
 
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(armEncoder);
 			System.out.print(armEncoder);
+
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(armPositionError);
+			System.out.print(armPositionError);
 		}
 	}
 
