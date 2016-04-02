@@ -5,7 +5,7 @@ import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ShootLowPower extends Command {
-	private static final double SPEED = -0.6;
+	private static final double SPEED = 0.6;
 
 	private BoulderController shooter;
 

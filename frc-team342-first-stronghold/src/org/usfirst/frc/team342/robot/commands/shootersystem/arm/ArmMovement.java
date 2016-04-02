@@ -15,7 +15,8 @@ public class ArmMovement extends Command {
 	private boolean hasRunOnce;
 
 	public enum ArmPosition {
-		FULL_IN(0.0), FULL_DOWN(-0.63);
+		FULL_IN(0.0), FULL_DOWN(-0.76); // .63 was used at first practice match
+										// (March 31, 2016)
 
 		private double position;
 

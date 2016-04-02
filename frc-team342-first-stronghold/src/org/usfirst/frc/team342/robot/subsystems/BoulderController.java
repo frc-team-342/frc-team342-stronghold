@@ -26,13 +26,18 @@ public class BoulderController extends Subsystem {
 	private CANTalon armMotor;
 
 	private DigitalInput armLimit;
+	private DigitalInput armLimitBottom;
 
-	private class preventArmBreak extends Trigger {
-		private static final double MAX_CURRENT = 12.0;
-
+	private class preventArmBreakLimitSwitch extends Trigger {
 		@Override
 		public boolean get() {
-			return armMotor.getOutputCurrent() > MAX_CURRENT || !armLimit.get();
+			return !armLimit.get();
+		}
+	}
+
+	private class preventArmBreakCurrent extends Trigger {
+		public boolean get() {
+			return !armLimitBottom.get();
 		}
 	}
 
@@ -48,7 +53,7 @@ public class BoulderController extends Subsystem {
 		shooterMotor = new CANTalon(RobotMap.SHOOTER_MOTOR_CAN_TALON);
 		collectorMotor = new CANTalon(RobotMap.COLLECTOR_MOTOR_CAN_TALON);
 		armLimit = new DigitalInput(RobotMap.ARM_LIMIT_DIO);
-
+		armLimitBottom = new DigitalInput(RobotMap.ARM_LIMIT_DOWN);
 		armMotor = new CANTalon(RobotMap.ARM_CAN_TALON);
 
 		/* Start of lots of arm motor code. */
@@ -91,7 +96,8 @@ public class BoulderController extends Subsystem {
 		// potentiometer = new AnalogInput(RobotMap.POTENTIOMETER_ANALOG);
 		// potentiometer.startLiveWindowMode();
 
-		new preventArmBreak().whenActive(new StopArm(true));
+		new preventArmBreakLimitSwitch().whenActive(new StopArm(true));
+		new preventArmBreakCurrent().whenActive(new StopArm(false));
 	}
 
 	public static BoulderController getInstance() {
@@ -108,6 +114,10 @@ public class BoulderController extends Subsystem {
 		return armLimit.get();
 	}
 
+	public boolean armLimitBottom() {
+		return armLimitBottom.get();
+	}
+
 	public double getArmEncoder() {
 		return (double) armMotor.getEncPosition() / ENCODER_CODES_PER_REVOLUTION;
 	}
@@ -117,9 +127,6 @@ public class BoulderController extends Subsystem {
 		shooterMotor.set(speed);
 	}
 
-	/**
-	 * TODO
-	 */
 	public void moveArm(double position) {
 		armMotor.enable();
 		armMotor.set(position);
@@ -138,11 +145,11 @@ public class BoulderController extends Subsystem {
 		}
 	}
 
-	public void moveBackward() {
+	public void moveBackwardVBUS(double speed) {
 		armMotor.changeControlMode(TalonControlMode.PercentVbus);
 
 		armMotor.enable();
-		armMotor.set(-0.2);
+		armMotor.set(speed);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package org.usfirst.frc.team342.robot.commands.drive;
 import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class DriveStraight extends Command {
 	/**
@@ -12,8 +13,10 @@ public class DriveStraight extends Command {
 	private static final double KP = 0.7;
 	private static final double SPEED = -0.8;
 
-	private static final double PEAK_VALUE = -12.0;
-	private static final double LEVEL_ZONE = 1.0;
+	private static final double PEAK_VALUE = 4.0;
+	private static final double LEVEL_ZONE = 3.0;
+
+	private static final int NUM_NUMBERS = 20;
 
 	private DriveSystem drive;
 
@@ -36,7 +39,7 @@ public class DriveStraight extends Command {
 		drive = DriveSystem.getInstance();
 		requires(drive);
 
-		gyroValues = new double[20];
+		gyroValues = new double[NUM_NUMBERS];
 	}
 
 	@Override
@@ -44,14 +47,14 @@ public class DriveStraight extends Command {
 		// The gyro must be initialized to zero for correction to work.
 		drive.resetGyro();
 
-		gyroValues = new double[20];
+		gyroValues = new double[NUM_NUMBERS];
 
 		initialAverage = 0;
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < NUM_NUMBERS; i++) {
 			gyroValues[i] = drive.getHeight();
 			initialAverage += gyroValues[i];
 		}
-		initialAverage /= 20;
+		initialAverage /= NUM_NUMBERS;
 
 		listCounter = 0;
 
@@ -65,19 +68,19 @@ public class DriveStraight extends Command {
 		drive.drive(SPEED, -angle * KP); // drive towards heading 0
 
 		gyroValues[listCounter++] = drive.getHeight();
-		listCounter %= 20;
+		listCounter %= NUM_NUMBERS;
 
 		double average = 0;
 		for (double val : gyroValues) {
 			average += val;
 		}
-		average /= 20;
+		average /= NUM_NUMBERS;
 
-		if (!pastPeak) {
-			pastPeak = average - PEAK_VALUE > initialAverage;
-		} else if (pastPeak) {
-			pastDefense = average < Math.abs(initialAverage - LEVEL_ZONE);
-		}
+		pastPeak |= Math.abs(average) - PEAK_VALUE > initialAverage;
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Passed Peak " + pastPeak);
+
+		pastDefense |= pastPeak && average < Math.abs(initialAverage - LEVEL_ZONE);
+		FRCNetworkCommunicationsLibrary.HALSetErrorData("Passed Defense " + pastDefense);
 	}
 
 	@Override

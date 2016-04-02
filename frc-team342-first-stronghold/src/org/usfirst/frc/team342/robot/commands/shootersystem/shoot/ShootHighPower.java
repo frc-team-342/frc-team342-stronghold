@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShootHighPower extends Command {
 	private BoulderController shooter;
 
-	private static final double SPEED = -1.0;
+	private static final double SPEED = 1.0;
 
 	/** Shoot the ball long range. */
 	public ShootHighPower() {

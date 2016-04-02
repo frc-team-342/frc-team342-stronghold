@@ -4,7 +4,6 @@ import org.usfirst.frc.team342.robot.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -29,7 +28,6 @@ public class DriveSystem extends Subsystem {
 	/** Navx device from kauilabs. */
 	private final AHRS navx;
 
-	private final AnalogInput ultrasonic;
 	private boolean driveReversed;
 
 	/** Controls and senses driving of the robot. */
@@ -54,7 +52,6 @@ public class DriveSystem extends Subsystem {
 		navx = new AHRS(SerialPort.Port.kMXP);
 		navx.startLiveWindowMode();
 
-		ultrasonic = new AnalogInput(RobotMap.ULTRASONIC_ANALOG);
 		driveReversed = false;
 	}
 
@@ -110,10 +107,6 @@ public class DriveSystem extends Subsystem {
 
 	public double getBackLeftCurrent() {
 		return backLeftWheel.getOutputCurrent();
-	}
-
-	public double getUltrasonic() {
-		return ultrasonic.getVoltage();
 	}
 
 	/** Set all motor values to zero. */

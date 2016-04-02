@@ -4,18 +4,13 @@ import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveBackward extends Command {
-	private static final double SPEED = -0.3;
-
+public class ArmForceForward extends Command {
+	private static final double SPEED = 0.2;
 	private BoulderController arm;
-
-	public MoveBackward() {
-		arm = BoulderController.getInstance();
-	}
 
 	@Override
 	protected void initialize() {
-		arm.setMode(false);
+		arm = BoulderController.getInstance();
 	}
 
 	@Override
@@ -25,6 +20,7 @@ public class MoveBackward extends Command {
 
 	@Override
 	protected boolean isFinished() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -5,6 +5,7 @@ import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class ResetArm extends Command {
+	private static double SPEED = 0.3;
 	private BoulderController arm;
 
 	@Override
@@ -14,7 +15,7 @@ public class ResetArm extends Command {
 
 	@Override
 	protected void execute() {
-		arm.moveBackward();
+		arm.moveBackwardVBUS(SPEED);
 	}
 
 	@Override

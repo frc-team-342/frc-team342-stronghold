@@ -2,7 +2,6 @@
 package org.usfirst.frc.team342.robot;
 
 import org.usfirst.frc.team342.robot.commands.drive.AutonomousDrive;
-import org.usfirst.frc.team342.robot.commands.drive.ChevalDeFriseAuto;
 import org.usfirst.frc.team342.robot.commands.drive.DriveUnderLowBar;
 import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
@@ -29,7 +28,7 @@ public class Robot extends IterativeRobot {
 	private static final String AUTONOMOUS_LOW_BAR_MESSAGE = "Autoing under low bar.\n";
 	private static final String AUTONOMOUS_UNUSED_MESSAGE = "No autonomous mode used.\n";
 
-	private static final String TELEOP_MESSAGE = "Teleop Initialized.\n";
+	private static final String TELEOP_MESSAGE = "Ich werde in Ihrem Gesicht zu explodieren. Teleop Initialized. No lolligagging or else Zayne will get angry.\n";
 
 	private static final String AUTONOMOUS_ENABLED = "Autonomous Enabled?";
 	private static final String AUTONMOUS_DRIVE_UNDER_LOWBAR = "Autonomous Low-Bar Enabled?";
@@ -71,8 +70,6 @@ public class Robot extends IterativeRobot {
 			if (SmartDashboard.getBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR)) {
 				new DriveUnderLowBar().start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUS_LOW_BAR_MESSAGE);
-			} else if (SmartDashboard.getBoolean(AUTONOMOUS_DRIVE_OVER_CHEVAL)) {
-				new ChevalDeFriseAuto().start();
 			} else {
 				new AutonomousDrive().start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE);

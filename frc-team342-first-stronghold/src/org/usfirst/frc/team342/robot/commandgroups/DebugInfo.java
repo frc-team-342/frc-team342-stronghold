@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class DebugInfo extends CommandGroup {
 	public DebugInfo() {
 		// addParallel(new DriveDebug());
-		addParallel(new ArmDebug());
+		// addParallel(new ArmDebug());
 		// addParallel(new CollectorDebug());
 		// addParallel(new ShooterDebug());
 	}

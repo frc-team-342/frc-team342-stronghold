@@ -1,8 +1,8 @@
 package org.usfirst.frc.team342.robot;
 
 import org.usfirst.frc.team342.robot.commandgroups.DebugInfo;
-import org.usfirst.frc.team342.robot.commands.camera.ChangeCamera;
-import org.usfirst.frc.team342.robot.commands.drive.DriveChange_Reverse;
+import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmForceForward;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement.ArmPosition;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.MoveBackward;
@@ -52,7 +52,7 @@ public class OI {
 	private static final int RIGHT_TRIGGER = 8;
 
 	private static final int START_BUTTON = 10;
-	private static final int BACK_BUTTON = 9;
+	// private static final int BACK_BUTTON = 9;
 
 	private static final int LEFT_STICK_BUTTON = 11;
 	private static final int RIGHT_STICK_BUTTON = 12;
@@ -62,20 +62,16 @@ public class OI {
 		driveRight = new Joystick(1);
 		joypad = new Joystick(2);
 
-		// Camera
-		mapCommand(START_BUTTON, new ChangeCamera(), false, joypad);
-
 		// Drive
-		mapCommand(JOYSTICK_SWITCH_CAM, new DriveChange_Reverse(), false, driveLeft);
-		mapCommand(JOYSTICK_SWITCH_CAM, new DriveChange_Reverse(), false, driveRight);
-		mapCommand(BACK_BUTTON, new DriveChange_Reverse(), false, joypad);
+		mapCommand(JOYSTICK_SWITCH_CAM, new ReverseRobotOrientation(), false, driveLeft);
+		mapCommand(JOYSTICK_SWITCH_CAM, new ReverseRobotOrientation(), false, driveRight);
 
 		// Arm
 		mapCommand(LEFT_TRIGGER, new ArmMovement(ArmPosition.FULL_IN, true), true, joypad);
 		mapCommand(LEFT_BUMPER, new ArmMovement(ArmPosition.FULL_DOWN, true), true, joypad);
 		mapCommand(LEFT_STICK_BUTTON, new MoveBackward(), true, joypad);
+		mapCommand(START_BUTTON, new ArmForceForward(), true, joypad);
 		mapCommand(Y_BUTTON, new StopArm(false), true, joypad);
-
 		// Collector
 		mapCommand(X_BUTTON, new CollectorOut(), true, joypad);
 		mapCommand(A_BUTTON, new CollectBall(), false, joypad);
