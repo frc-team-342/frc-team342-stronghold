@@ -4,6 +4,7 @@ package org.usfirst.frc.team342.robot;
 import org.usfirst.frc.team342.robot.commands.drive.AutonomousDrive;
 import org.usfirst.frc.team342.robot.commands.drive.DriveUnderLowBar;
 import org.usfirst.frc.team342.robot.commands.drive.DriveWithJoystick;
+import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmDashOutput;
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 import org.usfirst.frc.team342.robot.subsystems.CameraVisionRedux;
 import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
@@ -22,19 +23,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 // TODO Determine a standard formatting style
 public class Robot extends IterativeRobot {
-	private static final String INITIALIZED_MESSAGE = "Burnie is alive!!!\n";
+	private static final String INITIALIZED_MESSAGE = "Burnie is alive!!! No lolligagging or else Zayne will get angry.\n";
 
 	private static final String AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE = "Drive straight autonomous mode activated.\n";
 	private static final String AUTONOMOUS_LOW_BAR_MESSAGE = "Autoing under low bar.\n";
 	private static final String AUTONOMOUS_UNUSED_MESSAGE = "No autonomous mode used.\n";
 
-	private static final String TELEOP_MESSAGE = "Ich werde in Ihrem Gesicht zu explodieren. Teleop Initialized. No lolligagging or else Zayne will get angry.\n";
+	private static final String TELEOP_MESSAGE = "Ich werde in Ihrem Gesicht zu explodieren. Teleop Initialized.\n";
 
 	private static final String AUTONOMOUS_ENABLED = "Autonomous Enabled?";
+
+	private static final String AUTONOMOUS_SPEED = "Autonomous Speed?";
+	private static final double AUTONOMOUS_DEFAULT_SPEED_VAL = -0.8;
+
 	private static final String AUTONMOUS_DRIVE_UNDER_LOWBAR = "Autonomous Low-Bar Enabled?";
 	private static final String AUTONOMOUS_DRIVE_OVER_CHEVAL = "Autonomous Cheval de frise?";
 
-	private DriveWithJoystick joydrive;
+	private DriveWithJoystick joydriveCommand;
+	private ArmDashOutput armDashOutCommand;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -51,6 +57,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean(AUTONOMOUS_ENABLED, true);
 		SmartDashboard.putBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR, false);
 		SmartDashboard.putBoolean(AUTONOMOUS_DRIVE_OVER_CHEVAL, false);
+		SmartDashboard.putNumber(AUTONOMOUS_SPEED, AUTONOMOUS_DEFAULT_SPEED_VAL);
 	}
 
 	/**
@@ -63,15 +70,24 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+
+		double val = SmartDashboard.getNumber(AUTONOMOUS_SPEED);
+
+		if (val > 1.0 || val < -1.0) {
+			val = AUTONOMOUS_DEFAULT_SPEED_VAL;
+			SmartDashboard.putNumber(AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE, AUTONOMOUS_DEFAULT_SPEED_VAL);
+		}
 	}
 
 	public void autonomousInit() {
+		double speed = SmartDashboard.getNumber(AUTONOMOUS_SPEED);
+
 		if (SmartDashboard.getBoolean(AUTONOMOUS_ENABLED)) {
 			if (SmartDashboard.getBoolean(AUTONMOUS_DRIVE_UNDER_LOWBAR)) {
-				new DriveUnderLowBar().start();
+				new DriveUnderLowBar(speed).start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUS_LOW_BAR_MESSAGE);
 			} else {
-				new AutonomousDrive().start();
+				new AutonomousDrive(speed).start();
 				FRCNetworkCommunicationsLibrary.HALSetErrorData(AUTONOMOUSE_DRIVE_STRAIGHT_MESSAGE);
 			}
 		} else {
@@ -88,13 +104,15 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		FRCNetworkCommunicationsLibrary.HALSetErrorData(TELEOP_MESSAGE);
-		joydrive = new DriveWithJoystick();
+		joydriveCommand = new DriveWithJoystick();
+		armDashOutCommand = new ArmDashOutput();
 	}
 
 	/** This function is called periodically during operator control */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		joydrive.start();
+		joydriveCommand.start();
+		armDashOutCommand.start();
 	}
 
 	/** This function is called periodically during test mode */

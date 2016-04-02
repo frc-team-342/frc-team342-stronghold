@@ -15,7 +15,7 @@ public class ArmMovement extends Command {
 	private boolean hasRunOnce;
 
 	public enum ArmPosition {
-		FULL_IN(0.0), FULL_DOWN(-0.76); // .63 was used at first practice match
+		FULL_IN(0.0), FULL_DOWN(-0.65); // .63 was used at first practice match
 										// (March 31, 2016)
 
 		private double position;
@@ -63,8 +63,8 @@ public class ArmMovement extends Command {
 	 */
 	protected boolean isFinished() {
 		return hasRunOnce
-				&& ((Math.abs(arm.getPositionError()) <= MINIMUM_STOP_ERROR && timeSinceInitialized() >= TIME_DELAY)
-						|| !waitForArm);
+				&& (((Math.abs(arm.getPositionError()) <= MINIMUM_STOP_ERROR && timeSinceInitialized() >= TIME_DELAY)
+						|| !arm.armLimitBottom()) || !waitForArm);
 	}
 
 	protected void end() {

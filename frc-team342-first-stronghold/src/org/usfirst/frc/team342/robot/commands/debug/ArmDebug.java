@@ -1,4 +1,4 @@
-package org.usfirst.frc.team342.robot.commands.shootersystem.arm;
+package org.usfirst.frc.team342.robot.commands.debug;
 
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 
@@ -24,6 +24,8 @@ public class ArmDebug extends Command {
 			String arm = "Arm Current " + boulderCont.getArmCurrent() + "\n";
 			String armEncoder = "Arm encoder " + boulderCont.getArmEncoder() + "\n";
 			String armPositionError = "Arm Position error " + boulderCont.getPositionError() + "\n";
+			String current = "Shooter Current " + boulderCont.getShooterCurrent() + "\n";
+			String enc = "Encoder " + boulderCont.getShootEncVel() + "\n";
 
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(arm);
 			System.out.print(arm);
@@ -33,6 +35,14 @@ public class ArmDebug extends Command {
 
 			FRCNetworkCommunicationsLibrary.HALSetErrorData(armPositionError);
 			System.out.print(armPositionError);
+
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(current);
+			System.out.print(current);
+
+			FRCNetworkCommunicationsLibrary.HALSetErrorData(enc);
+			System.out.print(enc);
+
+			prevTime = timeSinceInitialized();
 		}
 	}
 

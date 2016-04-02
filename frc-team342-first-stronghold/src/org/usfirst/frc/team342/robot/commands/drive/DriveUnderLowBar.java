@@ -7,10 +7,10 @@ import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement.ArmP
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class DriveUnderLowBar extends CommandGroup {
-	public DriveUnderLowBar() {
+	public DriveUnderLowBar(double speed) {
 		addSequential(new ResetArm());
 		addSequential(new ArmMovement(ArmPosition.FULL_DOWN, true));
-		addSequential(new DriveStraight());
-		addSequential(new DriveSlow());
+		addSequential(new DriveStraight(speed));
+		addSequential(new DriveSlow(speed >= 0.0));
 	}
 }

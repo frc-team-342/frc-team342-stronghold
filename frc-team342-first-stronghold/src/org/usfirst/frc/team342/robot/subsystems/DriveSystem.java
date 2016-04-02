@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveSystem extends Subsystem {
-	/** Smooths stopping quickly */
+	/**
+	 * Prevents jerks when driver moves suddenly. MUST BE GREATER THAN 3.0 TO BE
+	 * USERFUL. Below and it will be do nothing, which is the desired behavior
+	 * for some drivers who have require better control.
+	 */
 	private static final double VOLTAGE_RAMP = 0.0;
-	private static final double DRIVE_SCALE = 1.0;
 
 	private static final DriveSystem instance = new DriveSystem();
 
@@ -43,6 +46,7 @@ public class DriveSystem extends Subsystem {
 		frontRightWheel.setVoltageRampRate(VOLTAGE_RAMP);
 		backRightWheel.setVoltageRampRate(VOLTAGE_RAMP);
 
+		// Mistakes were made regarding the wiring of the motors...
 		frontRightWheel.setInverted(true);
 		backLeftWheel.setInverted(true);
 
@@ -52,6 +56,7 @@ public class DriveSystem extends Subsystem {
 		navx = new AHRS(SerialPort.Port.kMXP);
 		navx.startLiveWindowMode();
 
+		// Allows human player to toggle drive direction.
 		driveReversed = false;
 	}
 
@@ -63,9 +68,9 @@ public class DriveSystem extends Subsystem {
 		if (driveReversed) {
 			// Swaps left and right on purpose. Raise your right hand in a
 			// mirror and you will see why.
-			drive.tankDrive(rightSpeed * -1 * DRIVE_SCALE, leftSpeed * -1 * DRIVE_SCALE);
+			drive.tankDrive(rightSpeed * -1, leftSpeed * -1);
 		} else {
-			drive.tankDrive(leftSpeed * DRIVE_SCALE, rightSpeed * DRIVE_SCALE);
+			drive.tankDrive(leftSpeed, rightSpeed);
 		}
 	}
 

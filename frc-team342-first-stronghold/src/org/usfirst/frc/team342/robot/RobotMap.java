@@ -19,9 +19,9 @@ public class RobotMap {
 	public static final int BACK_RIGHT_WHEEL_CAN_TALON = 4;
 
 	// Shooter motors
+	public static final int ARM_CAN_TALON = 5;
 	public static final int COLLECTOR_MOTOR_CAN_TALON = 6;
 	public static final int SHOOTER_MOTOR_CAN_TALON = 7;
-	public static final int ARM_CAN_TALON = 5;
 
 	public static final int ARM_LIMIT_DIO = 1;
 	public static final int ARM_LIMIT_DOWN = 2;

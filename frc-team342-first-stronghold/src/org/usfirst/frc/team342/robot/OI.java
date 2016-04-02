@@ -1,6 +1,6 @@
 package org.usfirst.frc.team342.robot;
 
-import org.usfirst.frc.team342.robot.commandgroups.DebugInfo;
+import org.usfirst.frc.team342.robot.commands.debug.DebugInfo;
 import org.usfirst.frc.team342.robot.commands.drive.ReverseRobotOrientation;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmForceForward;
 import org.usfirst.frc.team342.robot.commands.shootersystem.arm.ArmMovement;

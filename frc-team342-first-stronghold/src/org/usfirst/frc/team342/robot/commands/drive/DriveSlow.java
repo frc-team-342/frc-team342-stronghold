@@ -4,16 +4,25 @@ import org.usfirst.frc.team342.robot.subsystems.DriveSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ * Reduces risk of missing a defense by moving forward a little to avoid
+ * breaking.
+ */
 public class DriveSlow extends Command {
 	private static final double SPEED = -0.4;
-	private static final double DELAY = 2.0;
+	/** Amount of time to drive. */
+	private static final double DELAY = 4.0;
+
+	private boolean direction;
 
 	private DriveSystem drive;
 
 	private double startTime;
 
-	public DriveSlow() {
+	public DriveSlow(boolean awayFromArm) {
 		drive = DriveSystem.getInstance();
+
+		direction = awayFromArm;
 	}
 
 	@Override
@@ -23,7 +32,8 @@ public class DriveSlow extends Command {
 
 	@Override
 	protected void execute() {
-		drive.tankDrive(SPEED, SPEED);
+		double speed = direction ? SPEED : -1.0 * SPEED;
+		drive.tankDrive(speed, speed);
 	}
 
 	@Override

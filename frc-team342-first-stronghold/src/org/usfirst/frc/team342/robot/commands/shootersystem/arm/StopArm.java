@@ -3,7 +3,6 @@ package org.usfirst.frc.team342.robot.commands.shootersystem.arm;
 import org.usfirst.frc.team342.robot.subsystems.BoulderController;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
 
 public class StopArm extends Command {
 	private BoulderController arm;
@@ -17,18 +16,14 @@ public class StopArm extends Command {
 	}
 
 	protected void initialize() {
-		for (int i = 0; arm == null && i < 100; i++) {
+		// The method occasionally returned null (this may be due to how this
+		// command is called from within the method. */
+		// TODO This could probably be fixed by just removing the initalization
+		// from the constructor.
+		for (int i = 0; arm == null && i < 5; i++) {
 			arm = BoulderController.getInstance();
-			System.out.println("THE ARM IS NULL. FIX NOW!!!!");
-			FRCNetworkCommunicationsLibrary.HALSetErrorData("ERROR: THE ARM IS NULL. FIX NOW!!!!");
 		}
 		arm.stopArm(reset);
-		if (reset) {
-			
-		}
-		System.out.println("STopping arm!");
-		FRCNetworkCommunicationsLibrary.HALSetErrorData("STopping arm!");
-
 	}
 
 	protected void execute() {

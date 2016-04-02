@@ -1,6 +1,6 @@
 package org.usfirst.frc.team342.robot.subsystems;
 
-import org.usfirst.frc.team342.robot.commands.camera.SeeWithCamera;
+import org.usfirst.frc.team342.robot.commands.SeeWithCamera;
 
 import com.ni.vision.NIVision;
 import com.ni.vision.NIVision.Image;
@@ -37,11 +37,17 @@ d __ ___.-''-. _____b
  * art source:
  * <a href="http://www.chris.com/ascii/index.php?art=objects/cameras"> chris
  * .com </a>
+ * 
+ * 
+ * EDIT: After removing the ability to change cameras, the code is surprisingly
+ * elegant.
  */
 public class CameraVisionRedux extends Subsystem {
 	// There is a problem with camera names changing. If a change is
 	// suspected, find the correct name using the roborio web interface.
+	// Normal Camera name
 	private static final String CAMERA_1 = "cam1";
+	// Test robot camera name
 	// private static final String CAMERA_2 = "cam0";
 
 	/*
@@ -50,13 +56,13 @@ public class CameraVisionRedux extends Subsystem {
 	 */
 	private static final int CAMERA_QUALITY = 70;
 
-	private static final CameraVisionRedux INSTANCE = new CameraVisionRedux();
+	private static final CameraVisionRedux instance = new CameraVisionRedux();
 
 	private CameraServer camServer;
 
-	Image frame;
+	private Image frame;
 
-	int cameraNum;
+	private int cameraNum;
 
 	/**
 	 * True if the camera failed. This will prevent any code from trying to
@@ -94,7 +100,7 @@ public class CameraVisionRedux extends Subsystem {
 	}
 
 	public static CameraVisionRedux getInstance() {
-		return INSTANCE;
+		return instance;
 	}
 
 	@Override

@@ -9,6 +9,8 @@ public class DriveWithJoystick extends Command {
 	private static final int LEFT_STICK = Joystick.AxisType.kY.value;
 	private static final int RIGHT_STICK = Joystick.AxisType.kY.value;
 
+	private static final double DEAD_ZONE = 0.3;
+
 	private static final int JOY_STICK_1 = 0;
 	private static final int JOY_STICK_2 = 1;
 
@@ -38,6 +40,14 @@ public class DriveWithJoystick extends Command {
 	protected void execute() {
 		double left = joystick1.getRawAxis(LEFT_STICK);
 		double right = joystick2.getRawAxis(RIGHT_STICK);
+
+		if (Math.abs(left) < DEAD_ZONE) {
+			left = 0;
+		}
+
+		if (Math.abs(right) < DEAD_ZONE) {
+			right = 0;
+		}
 
 		drive.tankDrive(left, right);
 	}
