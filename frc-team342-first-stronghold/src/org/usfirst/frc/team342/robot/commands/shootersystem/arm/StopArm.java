@@ -7,12 +7,23 @@ import edu.wpi.first.wpilibj.command.Command;
 public class StopArm extends Command {
 	private BoulderController arm;
 
-	public StopArm() {
+	private boolean reset;
+
+	public StopArm(boolean resetEncoder) {
 		arm = BoulderController.getInstance();
+
+		reset = resetEncoder;
 	}
 
 	protected void initialize() {
-		arm.stopArm();
+		// The method occasionally returned null (this may be due to how this
+		// command is called from within the method. */
+		// TODO This could probably be fixed by just removing the initalization
+		// from the constructor.
+		for (int i = 0; arm == null && i < 5; i++) {
+			arm = BoulderController.getInstance();
+		}
+		arm.stopArm(reset);
 	}
 
 	protected void execute() {
@@ -26,6 +37,5 @@ public class StopArm extends Command {
 	}
 
 	protected void interrupted() {
-		arm.stopArm();
 	}
 }

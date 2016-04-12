@@ -1,4 +1,4 @@
-package org.usfirst.frc.team342.robot.commands.camera;
+package org.usfirst.frc.team342.robot.commands;
 
 import org.usfirst.frc.team342.robot.subsystems.CameraVisionRedux;
 

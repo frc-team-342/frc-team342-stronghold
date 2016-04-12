@@ -13,12 +13,10 @@ public class ReverseRobotOrientation extends Command {
 
 	public ReverseRobotOrientation() {
 		drive = DriveSystem.getInstance();
-		// requires(drive);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-
 		boolean reverse = drive.getDriveReversed();
 		drive.setDriveReverse(!reverse);
 	}
